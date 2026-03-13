@@ -4,23 +4,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MARCA — Premium Editorial Commerce</title>
+  <title>Obm Studio — Premium Photo Studio E-commerce</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <!-- CUSTOM CURSOR -->
   <div id="cursor"></div>
   <div id="cursor-ring"></div>
 
-  <!-- ═══════════════════════════════════════════
-     NAVIGATION
-═══════════════════════════════════════════ -->
   <nav id="navbar">
     <div class="nav-inner">
       <div class="logo" onclick="nav('home')">
-        <span class="logo-dot"></span>MARCA
+        <span class="logo-dot"></span>Obm Studio
       </div>
 
       <div class="nav-search">
@@ -32,6 +28,18 @@
       </div>
 
       <div class="nav-links">
+        <button class="nav-btn theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" style="display: none;">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
         <button class="nav-btn" onclick="nav('home')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -63,23 +71,19 @@
     </div>
   </nav>
 
-  <!-- ═══════════════════════════════════════════
-     HOME PAGE
-═══════════════════════════════════════════ -->
   <div id="page-home" class="page active">
 
-    <!-- HERO -->
     <section class="hero container" style="padding-top: var(--nav-h);">
       <div class="hero-left fade-up">
         <div class="hero-eyebrow">
           <div class="eyebrow-line"></div>
-          <span class="label label-gold">New Season · 2025</span>
+          <span class="label label-accent">Studio Collection · 2025</span>
         </div>
-        <h1 class="display">Shop the<br><em>future</em> of<br>everyday style</h1>
-        <p class="hero-sub">Curated collections from the world's leading brands. Premium quality, editorial taste,
-          delivered to your door.</p>
+        <h1 class="display">Preserve your<br><em>memories</em> with<br>premium prints</h1>
+        <p class="hero-sub">Custom photo frames, wedding albums, and personalized gifts crafted with studio-quality
+          precision.</p>
         <div class="hero-actions">
-          <button class="btn btn-gold btn-lg" onclick="nav('shop')">
+          <button class="btn btn-primary btn-lg" onclick="nav('shop')">
             Explore Shop
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7" />
@@ -90,11 +94,11 @@
         <div class="hero-stats">
           <div>
             <div class="hero-stat-num">50K+</div>
-            <div class="hero-stat-label">Products</div>
+            <div class="hero-stat-label">Prints Made</div>
           </div>
           <div>
             <div class="hero-stat-num">2M+</div>
-            <div class="hero-stat-label">Customers</div>
+            <div class="hero-stat-label">Happy Clients</div>
           </div>
           <div>
             <div class="hero-stat-num">4.9★</div>
@@ -109,23 +113,22 @@
       <div class="hero-right">
         <div class="hero-geo geo-circle"></div>
         <div class="hero-geo geo-circle-2"></div>
-        <div class="hero-image-main">🛍️</div>
+        <div class="hero-image-main">📸</div>
         <div class="hero-float-card f1">
           <div class="dot" style="background:#22c55e;"></div>
           <span style="font-size:12px;">Free shipping over $50</span>
         </div>
         <div class="hero-float-card f2">
-          <div class="dot" style="background:var(--gold);"></div>
-          <span style="font-size:12px;">⭐ 4.9 · 2M+ reviews</span>
+          <div class="dot" style="background:var(--accent-gold);"></div>
+          <span style="font-size:12px;">⭐ 4.9 · Studio Quality</span>
         </div>
         <div class="hero-float-card f3">
-          <div class="dot" style="background:var(--amber);"></div>
-          <span style="font-size:12px;">30-day free returns</span>
+          <div class="dot" style="background:var(--primary-color);"></div>
+          <span style="font-size:12px;">Color-perfect guarantee</span>
         </div>
       </div>
     </section>
 
-    <!-- CATEGORIES -->
     <section class="section container">
       <div class="section-header fade-up">
         <div>
@@ -137,14 +140,14 @@
       <div class="cats-grid" id="homeFeatCats"></div>
     </section>
 
-    <!-- PROMO BANNER -->
     <section class="section container">
       <div class="promo-banner fade-up">
         <div class="promo-content">
           <div class="promo-tag">Limited Offer</div>
-          <h2 class="promo-title">Up to <em>40% off</em><br>Sport & Wellness</h2>
-          <p class="promo-sub">Premium brands at unbeatable prices. This weekend only — don't miss out.</p>
-          <button class="btn btn-gold btn-lg" onclick="nav('shop', {cat:'Sport'})">
+          <h2 class="promo-title">Up to <em>40% off</em><br>Wedding Albums</h2>
+          <p class="promo-sub">Premium layflat albums at unbeatable prices. Preserve your special day—this weekend only.
+          </p>
+          <button class="btn btn-primary btn-lg" onclick="nav('shop', {cat:'Albums'})">
             Shop the Sale
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7" />
@@ -155,12 +158,11 @@
           <div class="promo-geo" style="width:300px;height:300px;top:-50px;right:-50px;"></div>
           <div class="promo-geo" style="width:200px;height:200px;bottom:20px;left:20px;"></div>
           <span
-            style="font-size:110px;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.4));animation:float-hero 5s ease-in-out infinite;">🏆</span>
+            style="font-size:110px;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.1));animation:float-hero 5s ease-in-out infinite;">🖼️</span>
         </div>
       </div>
     </section>
 
-    <!-- TRENDING -->
     <section class="section container">
       <div class="section-header fade-up">
         <div>
@@ -173,37 +175,37 @@
         id="homeTrendingGrid"></div>
     </section>
 
-    <!-- NEWSLETTER -->
     <section class="section container">
       <div
-        style="background:var(--surface);border:1px solid var(--mist);border-radius:var(--r-xl);overflow:hidden;position:relative;">
+        style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;position:relative;transition:background-color 0.4s ease, border-color 0.4s ease;">
         <div
-          style="position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(201,149,42,0.08)0%,transparent 70%);top:-150px;left:50%;transform:translateX(-50%);pointer-events:none;">
+          style="position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,var(--primary-light) 0%,transparent 70%);top:-150px;left:50%;transform:translateX(-50%);pointer-events:none;">
         </div>
         <div class="newsletter">
           <div class="section-eyebrow" style="margin-bottom:12px;">Newsletter</div>
           <h2 class="headline" style="margin-bottom:10px;">Stay in the know</h2>
-          <p style="color:var(--ash);font-size:14px;">Exclusive drops, early access, and editorial picks — delivered
+          <p style="color:var(--text-muted);font-size:14px;">Exclusive drops, early access, and creative ideas —
+            delivered
             weekly.</p>
           <form class="newsletter-form"
-            onsubmit="event.preventDefault();toast('Subscribed! Welcome to MARCA.','success');">
+            onsubmit="event.preventDefault();toast('Subscribed! Welcome to Obm Studio.','success');">
             <input class="newsletter-input" type="email" placeholder="your@email.com" required />
-            <button class="btn btn-gold" type="submit">Subscribe</button>
+            <button class="btn btn-primary" type="submit">Subscribe</button>
           </form>
         </div>
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
             <div class="footer-logo"><span
-                style="width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;margin-right:6px;"></span>MARCA
+                style="width:7px;height:7px;border-radius:50%;background:var(--primary-color);display:inline-block;margin-right:6px;"></span>Obm
+              Studio
             </div>
-            <p class="footer-brand-sub">Premium editorial commerce for the discerning buyer. Curated brands, fast
-              shipping, exceptional service.</p>
+            <p class="footer-brand-sub">Premium photo printing and studio services. Turn your favorite moments into
+              timeless art.</p>
             <div class="footer-social">
               <div class="social-icon">𝕏</div>
               <div class="social-icon">in</div>
@@ -213,11 +215,11 @@
           </div>
           <div>
             <div class="footer-col-title">Shop</div>
-            <a class="footer-link" onclick="nav('shop')">New Arrivals</a>
-            <a class="footer-link" onclick="nav('shop',{cat:'Sport'})">Sport</a>
-            <a class="footer-link" onclick="nav('shop',{cat:'Fashion'})">Fashion</a>
-            <a class="footer-link" onclick="nav('shop',{cat:'Electronics'})">Electronics</a>
-            <a class="footer-link" onclick="nav('shop',{cat:'Gaming'})">Gaming</a>
+            <a class="footer-link" onclick="nav('shop')">All Products</a>
+            <a class="footer-link" onclick="nav('shop',{cat:'Photo Frames'})">Photo Frames</a>
+            <a class="footer-link" onclick="nav('shop',{cat:'Albums'})">Albums</a>
+            <a class="footer-link" onclick="nav('shop',{cat:'Wall Frames'})">Wall Frames</a>
+            <a class="footer-link" onclick="nav('shop',{cat:'Gift Prints'})">Gift Prints</a>
           </div>
           <div>
             <div class="footer-col-title">Help</div>
@@ -237,7 +239,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <span class="footer-copy">© 2025 MARCA. All rights reserved.</span>
+          <span class="footer-copy">© 2025 Obm Studio. All rights reserved.</span>
           <div class="footer-legal">
             <a>Privacy Policy</a>
             <a>Terms of Service</a>
@@ -248,14 +250,10 @@
     </footer>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     SHOP PAGE
-═══════════════════════════════════════════ -->
   <div id="page-shop" class="page">
     <div class="container">
       <div class="cat-strip" id="shopCatPills"></div>
       <div class="shop-layout">
-        <!-- Sidebar -->
         <aside class="sidebar">
           <div class="filter-section">
             <div class="filter-title">
@@ -297,7 +295,6 @@
           </div>
         </aside>
 
-        <!-- Grid -->
         <div>
           <div class="grid-header">
             <span class="results-count" id="shopCount">12 items</span>
@@ -315,30 +312,18 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     PRODUCT DETAIL PAGE
-═══════════════════════════════════════════ -->
   <div id="page-detail" class="page">
     <div id="detailContent"></div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     CART PAGE
-═══════════════════════════════════════════ -->
   <div id="page-cart" class="page">
     <div id="cartContent"></div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     CHECKOUT PAGE
-═══════════════════════════════════════════ -->
   <div id="page-checkout" class="page">
     <div id="checkoutContent"></div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     ORDER SUCCESS
-═══════════════════════════════════════════ -->
   <div id="page-success" class="page">
     <div class="success-wrap container">
       <div class="success-icon-wrap">
@@ -347,9 +332,9 @@
         </svg>
       </div>
       <h1 class="success-h">Order Confirmed!</h1>
-      <p class="success-sub">Thank you for shopping with MARCA. Your order has been received and will be dispatched
+      <p class="success-sub">Thank you for shopping with Obm Studio. Your order has been received and will be crafted
         soon.</p>
-      <div class="order-pill" id="successOrderId">MRC-00000000</div>
+      <div class="order-pill" id="successOrderId">OBM-00000000</div>
 
       <div class="success-track-preview">
         <div class="stp">
@@ -375,44 +360,38 @@
 
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-outline btn-lg" onclick="nav('tracking')">Track Order</button>
-        <button class="btn btn-gold btn-lg" onclick="nav('shop')">Continue Shopping</button>
+        <button class="btn btn-primary btn-lg" onclick="nav('shop')">Continue Shopping</button>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     ORDER TRACKING
-═══════════════════════════════════════════ -->
   <div id="page-tracking" class="page">
     <div class="container">
       <div class="tracking-wrap">
         <div class="section-eyebrow" style="margin-bottom:8px;">Track Your Order</div>
         <h1 class="headline fade-up" style="margin-bottom:32px;">Order Tracking</h1>
         <div class="track-input-row">
-          <input class="form-input" id="trackInput" placeholder="Enter order ID (e.g. MRC-2025-00234)"
+          <input class="form-input" id="trackInput" placeholder="Enter order ID (e.g. OBM-2025-00234)"
             style="flex:1;" />
-          <button class="btn btn-gold" onclick="trackOrder()">Track</button>
+          <button class="btn btn-primary" onclick="trackOrder()">Track</button>
         </div>
         <div id="trackResult"></div>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     LOGIN
-═══════════════════════════════════════════ -->
   <div id="page-login" class="page">
     <div class="auth-container">
       <div class="auth-visual">
         <div class="hero-geo geo-circle"></div>
         <div class="hero-geo geo-circle-2"></div>
-        <div style="font-size:80px;margin-bottom:24px;animation:float-hero 6s ease-in-out infinite;">🛍️</div>
-        <h2 class="auth-visual-title">Welcome<br>back to <em>MARCA</em></h2>
-        <p class="auth-visual-sub">Your curated world of premium commerce awaits.</p>
+        <div style="font-size:80px;margin-bottom:24px;animation:float-hero 6s ease-in-out infinite;">🖼️</div>
+        <h2 class="auth-visual-title">Welcome<br>back to <em>Obm Studio</em></h2>
+        <p class="auth-visual-sub">Your curated world of premium prints awaits.</p>
       </div>
       <div class="auth-form-side">
         <div class="auth-form-wrap">
-          <div class="auth-logo">MARCA · Sign In</div>
+          <div class="auth-logo">OBM STUDIO · Sign In</div>
           <h2 class="auth-title">Welcome back</h2>
           <p class="auth-sub">Sign in to continue shopping</p>
           <div class="auth-form">
@@ -428,7 +407,7 @@
               <label>Password</label>
               <input class="form-input" type="password" placeholder="••••••••" />
             </div>
-            <button class="btn btn-gold" style="justify-content:center;"
+            <button class="btn btn-primary" style="justify-content:center;"
               onclick="toast('Signed in!','success');nav('home')">Sign In</button>
           </div>
           <div class="auth-switch">Don't have an account? <a onclick="nav('register')">Create one</a></div>
@@ -437,22 +416,19 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     REGISTER
-═══════════════════════════════════════════ -->
   <div id="page-register" class="page">
     <div class="auth-container">
       <div class="auth-visual">
         <div class="hero-geo geo-circle"></div>
         <div style="font-size:80px;margin-bottom:24px;animation:float-hero 6s ease-in-out infinite 1s;">✦</div>
-        <h2 class="auth-visual-title">Join the<br><em>MARCA</em> world</h2>
-        <p class="auth-visual-sub">Exclusive deals, early access, and the finest editorial curation.</p>
+        <h2 class="auth-visual-title">Join the<br><em>Obm Studio</em> family</h2>
+        <p class="auth-visual-sub">Exclusive deals, early access, and the finest print quality.</p>
       </div>
       <div class="auth-form-side">
         <div class="auth-form-wrap">
-          <div class="auth-logo">MARCA · Create Account</div>
+          <div class="auth-logo">OBM STUDIO · Create Account</div>
           <h2 class="auth-title">Create account</h2>
-          <p class="auth-sub">Join millions of happy shoppers</p>
+          <p class="auth-sub">Join millions of happy creators</p>
           <div class="auth-form">
             <div class="form-row">
               <div class="form-field"><label>First Name</label><input class="form-input" placeholder="Sakil" /></div>
@@ -466,7 +442,7 @@
               <label>Password</label>
               <input class="form-input" type="password" placeholder="Min. 8 characters" />
             </div>
-            <button class="btn btn-gold" style="justify-content:center;"
+            <button class="btn btn-primary" style="justify-content:center;"
               onclick="toast('Account created! Welcome.','success');nav('home')">Create Account</button>
           </div>
           <div class="auth-switch">Already have an account? <a onclick="nav('login')">Sign in</a></div>
@@ -475,9 +451,6 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     PROFILE
-═══════════════════════════════════════════ -->
   <div id="page-profile" class="page">
     <div class="container">
       <div class="profile-grid">
@@ -523,9 +496,6 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     ORDERS PAGE
-═══════════════════════════════════════════ -->
   <div id="page-orders" class="page">
     <div class="container" style="padding-top:calc(var(--nav-h) + 40px);">
       <div class="section-eyebrow" style="margin-bottom:8px;">Account</div>
@@ -534,9 +504,6 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-     TOAST STACK
-═══════════════════════════════════════════ -->
   <div class="toast-stack" id="toastStack"></div>
 
   <script src="app.js"></script>

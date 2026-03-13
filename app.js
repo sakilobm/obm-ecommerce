@@ -1,35 +1,67 @@
 /* ================================================
-   MARCA — Main JavaScript
+   OBM STUDIO — Main JavaScript
    ================================================ */
 
 'use strict';
 
 // ──────────────────────────────────────────────
+// THEME TOGGLE (Light / Dark Mode)
+// ──────────────────────────────────────────────
+function initTheme() {
+  const storedTheme = localStorage.getItem('obm-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = storedTheme || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  updateThemeIcon(theme);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('obm-theme', next);
+  updateThemeIcon(next);
+}
+
+function updateThemeIcon(theme) {
+  const sun = document.querySelector('.icon-sun');
+  const moon = document.querySelector('.icon-moon');
+  if (sun && moon) {
+    if (theme === 'dark') {
+      sun.style.display = 'block';
+      moon.style.display = 'none';
+    } else {
+      sun.style.display = 'none';
+      moon.style.display = 'block';
+    }
+  }
+}
+
+// ──────────────────────────────────────────────
 // DATA
 // ──────────────────────────────────────────────
 const PRODUCTS = [
-  { id: 1,  name: 'WH22-6 Smart Fitness Watch',   brand: 'Xiaomi',      price: 454,    old: 620,   rating: 4.7, reviews: 2341,  emoji: '⌚', badge: 'top',  cat: 'Electronics', desc: 'Advanced fitness tracking with GPS, optical heart rate sensor, and 14-day battery. Water resistant to 50m. Available in midnight and sand.' },
-  { id: 2,  name: 'Pro Tennis Racket Set',          brand: 'Nike',        price: 30.99,  old: null,  rating: 4.2, reviews: 876,   emoji: '🎾', badge: null,   cat: 'Sport',       desc: 'Lightweight aluminium frame, strung and ready to play. Perfect for beginners and intermediate players. Includes protective case.' },
-  { id: 3,  name: 'Apex Boxing Gloves',             brand: 'Adidas',      price: 196.84, old: 275,   rating: 4.8, reviews: 3102,  emoji: '🥊', badge: 'top',  cat: 'Sport',       desc: 'Professional-grade triple-stitched leather. Anatomical thumb support, velcro wrist closure. Competition and training approved.' },
-  { id: 4,  name: 'Club Kit Recurve Bow',           brand: 'Columbia',    price: 48.99,  old: null,  rating: 3.9, reviews: 412,   emoji: '🏹', badge: null,   cat: 'Sport',       desc: 'Complete beginner archery set with recurve bow, three arrows, arm guard, and foam target. Draw weight 20lb.' },
-  { id: 5,  name: 'Therma-Fit Training Hoodie',     brand: 'Nike',        price: 154.99, old: 189,   rating: 5.0, reviews: 5891,  emoji: '🧥', badge: 'top',  cat: 'Fashion',     desc: 'Warm DRI-FIT technology hoodie. Kangaroo pocket, adjustable hood, dropped hem. Available in three colourways.' },
-  { id: 6,  name: 'Air Monarch White Trainers',     brand: 'Nike',        price: 210,    old: 259,   rating: 4.6, reviews: 1203,  emoji: '👟', badge: 'top',  cat: 'Fashion',     desc: 'Responsive Air cushioning, engineered mesh upper, modern runner silhouette. Sizes 6–14.' },
-  { id: 7,  name: 'QuietStudio NC Headphones',      brand: 'New Balance', price: 299,    old: 399,   rating: 4.5, reviews: 2100,  emoji: '🎧', badge: 'deal', cat: 'Electronics', desc: '40-hour battery with noise cancellation. Hi-Res audio certified, foldable travel design, USB-C fast charge.' },
-  { id: 8,  name: 'Align Pro Yoga Mat',             brand: 'Demix',       price: 59,     old: null,  rating: 4.4, reviews: 788,   emoji: '🧘', badge: null,   cat: 'Wellness',    desc: '6mm eco-TPE foam, alignment lines printed with water-based inks, carry strap included. 183×61cm.' },
-  { id: 9,  name: 'Blade 80% Mechanical Keyboard',  brand: 'Asics',       price: 129.99, old: 179,   rating: 4.7, reviews: 3340,  emoji: '⌨️', badge: 'deal', cat: 'Gaming',      desc: 'Per-key RGB, tactile blue switches, anodised aluminium frame. TKL compact layout, N-key rollover.' },
-  { id: 10, name: 'Halo Bluetooth Speaker',         brand: 'Xiaomi',      price: 79,     old: null,  rating: 4.3, reviews: 1500,  emoji: '🔊', badge: null,   cat: 'Music',       desc: '360° omnidirectional sound, IPX7 waterproof, 12-hour battery. Party pairing connects two units.' },
-  { id: 11, name: 'Velocity Running Shorts',        brand: 'Adidas',      price: 44.99,  old: 65,    rating: 4.6, reviews: 930,   emoji: '🩳', badge: null,   cat: 'Sport',       desc: 'Moisture-wicking four-way stretch fabric. Built-in brief liner, zippered rear pocket.' },
-  { id: 12, name: 'Vortex Insulated Bottle',        brand: 'Columbia',    price: 34.99,  old: null,  rating: 4.8, reviews: 4200,  emoji: '💧', badge: 'new',  cat: 'Wellness',    desc: 'Double-wall vacuum insulation. Cold 24h, hot 12h. BPA-free, leak-proof lid. 750ml.' },
+  { id: 1, name: 'Premium Wedding Album', brand: 'Obm Studio', price: 150, old: 200, rating: 4.9, reviews: 1204, emoji: '📖', badge: 'top', cat: 'Albums', desc: 'Handcrafted layflat wedding album with premium photographic paper and genuine leather cover.' },
+  { id: 2, name: 'Custom Printed Mug', brand: 'Obm Studio', price: 18.99, old: 25, rating: 4.7, reviews: 850, emoji: '☕', badge: 'deal', cat: 'Photo Mugs', desc: 'High-quality ceramic mug with vibrant, fade-resistant photo printing. Microwave and dishwasher safe.' },
+  { id: 3, name: 'Classic Wooden Frame', brand: 'Obm Studio', price: 45, old: null, rating: 4.8, reviews: 632, emoji: '🖼️', badge: null, cat: 'Photo Frames', desc: 'Solid oak wood frame with acid-free matting and UV-protective glass. Perfect for standard prints.' },
+  { id: 4, name: 'Acrylic Wall Frame', brand: 'Obm Studio', price: 120, old: 150, rating: 4.9, reviews: 412, emoji: '🔲', badge: 'top', cat: 'Wall Frames', desc: 'Modern frameless acrylic float mount. Your photo is printed directly onto gallery-grade acrylic for stunning depth.' },
+  { id: 5, name: 'Memory Photo Book', brand: 'Obm Studio', price: 65, old: null, rating: 4.6, reviews: 920, emoji: '📚', badge: 'new', cat: 'Albums', desc: 'Customizable hardcover photo book. Perfect for vacations, year-in-review, or family milestones.' },
+  { id: 6, name: 'Canvas Print (16x20")', brand: 'Obm Studio', price: 85, old: 110, rating: 4.8, reviews: 1045, emoji: '🎨', badge: 'sale', cat: 'Wall Frames', desc: 'Gallery-wrapped canvas print on poly-cotton blend. Fade-resistant archival inks.' },
+  { id: 7, name: 'Polaroid Style Print Set', brand: 'Obm Studio', price: 24, old: null, rating: 4.5, reviews: 2100, emoji: '📸', badge: null, cat: 'Gift Prints', desc: 'Set of 24 retro-style square prints with classic white borders. Printed on thick cardstock.' },
+  { id: 8, name: 'Engraved Wood Photo', brand: 'Obm Studio', price: 55, old: null, rating: 4.7, reviews: 310, emoji: '🪵', badge: null, cat: 'Gift Prints', desc: 'Your photo laser-engraved onto natural basswood with bark edges. A unique rustic keepsake.' },
+  { id: 9, name: 'Personalized Desk Calendar', brand: 'Obm Studio', price: 29.99, old: 35, rating: 4.6, reviews: 540, emoji: '📅', badge: null, cat: 'Gift Prints', desc: '12-month freestanding desk calendar. Feature a different favorite photo for each month.' },
+  { id: 10, name: 'Metal Print (High Gloss)', brand: 'Obm Studio', price: 95, old: 130, rating: 4.9, reviews: 870, emoji: '🎞️', badge: 'top', cat: 'Wall Frames', desc: 'Dyes are infused directly into coated aluminum sheets. Unsurpassed detail and vibrancy.' },
+  { id: 11, name: 'Minimalist Black Frame', brand: 'Obm Studio', price: 35, old: null, rating: 4.7, reviews: 1420, emoji: '🖼️', badge: null, cat: 'Photo Frames', desc: 'Sleek aluminum frame in matte black. Includes tempered glass and hanging hardware.' },
+  { id: 12, name: 'Magic Color-Changing Mug', brand: 'Obm Studio', price: 22, old: 28, rating: 4.4, reviews: 615, emoji: '🍵', badge: 'deal', cat: 'Photo Mugs', desc: 'Appears solid black when cold, reveals your hidden photo when filled with a hot beverage.' },
 ];
 
 const CATEGORIES = [
-  { name: 'All',         icon: '✦',  count: 12 },
-  { name: 'Sport',       icon: '⚽', count: 4  },
-  { name: 'Fashion',     icon: '👗', count: 2  },
-  { name: 'Electronics', icon: '📱', count: 2  },
-  { name: 'Wellness',    icon: '🌿', count: 2  },
-  { name: 'Music',       icon: '🎵', count: 1  },
-  { name: 'Gaming',      icon: '🎮', count: 1  },
+  { name: 'All', icon: '✦', count: 12 },
+  { name: 'Photo Frames', icon: '🖼️', count: 2 },
+  { name: 'Photo Mugs', icon: '☕', count: 2 },
+  { name: 'Albums', icon: '📖', count: 2 },
+  { name: 'Wall Frames', icon: '🔲', count: 3 },
+  { name: 'Gift Prints', icon: '🎁', count: 3 },
 ];
 
 // ──────────────────────────────────────────────
@@ -43,17 +75,17 @@ let state = {
   activeCat: 'All',
   currentPage: 'home',
   orders: [
-    { id: 'MRC-2025-00234', name: 'Therma-Fit Training Hoodie', emoji: '🧥', date: 'Mar 10, 2025', price: 154.99, status: 'transit' },
-    { id: 'MRC-2025-00198', name: 'WH22-6 Smart Fitness Watch',  emoji: '⌚', date: 'Feb 28, 2025', price: 454.00, status: 'delivered' },
-    { id: 'MRC-2025-00155', name: 'Apex Boxing Gloves',          emoji: '🥊', date: 'Feb 14, 2025', price: 196.84, status: 'delivered' },
-    { id: 'MRC-2025-00132', name: 'Club Kit Recurve Bow',        emoji: '🏹', date: 'Jan 30, 2025', price: 48.99,  status: 'processing' },
+    { id: 'OBM-2025-00234', name: 'Premium Wedding Album', emoji: '📖', date: 'Mar 10, 2025', price: 150.00, status: 'transit' },
+    { id: 'OBM-2025-00198', name: 'Custom Printed Mug', emoji: '☕', date: 'Feb 28, 2025', price: 18.99, status: 'delivered' },
+    { id: 'OBM-2025-00155', name: 'Acrylic Wall Frame', emoji: '🔲', date: 'Feb 14, 2025', price: 120.00, status: 'delivered' },
+    { id: 'OBM-2025-00132', name: 'Memory Photo Book', emoji: '📚', date: 'Jan 30, 2025', price: 65.00, status: 'processing' },
   ],
 };
 
 // ──────────────────────────────────────────────
 // CURSOR
 // ──────────────────────────────────────────────
-const cursor     = document.getElementById('cursor');
+const cursor = document.getElementById('cursor');
 const cursorRing = document.getElementById('cursor-ring');
 let mx = -100, my = -100, rx = -100, ry = -100;
 
@@ -89,12 +121,12 @@ function nav(page, opts = {}) {
   state.currentPage = page;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  if (page === 'shop')     renderShop(opts.cat);
-  if (page === 'detail')   renderDetail(opts.product);
-  if (page === 'cart')     renderCart();
+  if (page === 'shop') renderShop(opts.cat);
+  if (page === 'detail') renderDetail(opts.product);
+  if (page === 'cart') renderCart();
   if (page === 'checkout') renderCheckout();
-  if (page === 'profile')  renderProfile();
-  if (page === 'orders')   renderOrders();
+  if (page === 'profile') renderProfile();
+  if (page === 'orders') renderOrders();
 }
 
 // Scroll → navbar effect
@@ -118,7 +150,7 @@ function fmt(n) { return '$' + (+n).toFixed(2); }
 
 function badgeHTML(b) {
   if (!b) return '';
-  const labels = { top: 'Top Item', deal: 'Deal', new: 'New', sale: 'Sale' };
+  const labels = { top: 'Best Seller', deal: 'Deal', new: 'New', sale: 'Sale' };
   return `<div class="card-badge badge-${b}">${labels[b] || b}</div>`;
 }
 
@@ -242,7 +274,7 @@ function initHome() {
   const catsEl = document.getElementById('homeFeatCats');
   if (catsEl) {
     catsEl.innerHTML = CATEGORIES.slice(1).map(c => `
-      <div class="cat-card fade-up" onclick="nav('shop', {cat: '${c.name}'})" style="animation-delay:${CATEGORIES.indexOf(c)*0.07}s;">
+      <div class="cat-card fade-up" onclick="nav('shop', {cat: '${c.name}'})" style="animation-delay:${CATEGORIES.indexOf(c) * 0.07}s;">
         <span class="cat-icon">${c.icon}</span>
         <div class="cat-label">${c.name}</div>
         <div class="cat-count">${c.count} items</div>
@@ -278,10 +310,10 @@ function renderShop(cat) {
   const sort = document.getElementById('shopSort');
   if (sort) {
     const v = sort.value;
-    if (v === 'price-asc')  prods = [...prods].sort((a, b) => a.price - b.price);
+    if (v === 'price-asc') prods = [...prods].sort((a, b) => a.price - b.price);
     if (v === 'price-desc') prods = [...prods].sort((a, b) => b.price - a.price);
-    if (v === 'rating')     prods = [...prods].sort((a, b) => b.rating - a.rating);
-    if (v === 'popular')    prods = [...prods].sort((a, b) => b.reviews - a.reviews);
+    if (v === 'rating') prods = [...prods].sort((a, b) => b.rating - a.rating);
+    if (v === 'popular') prods = [...prods].sort((a, b) => b.reviews - a.reviews);
   }
 
   const cntEl = document.getElementById('shopCount');
@@ -324,7 +356,7 @@ function initFilters() {
         <div class="brand-icon">${b[0]}</div>
         <span class="brand-name">${b}</span>
         <div class="checkbox${i < 6 ? ' checked' : ''}">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
       </div>`).join('');
   }
@@ -334,7 +366,7 @@ function initFilters() {
   if (starsEl) {
     starsEl.innerHTML = [5, 4, 3].map(n => `
       <div class="star-filter-row" onclick="filterStar(${n})">
-        ${stars(n, 14)} <span style="font-size:12px;color:var(--smoke)">& up</span>
+        ${stars(n, 14)} <span style="font-size:12px;color:var(--text-muted)">& up</span>
       </div>`).join('');
   }
 }
@@ -367,7 +399,6 @@ function renderDetail(id) {
     <div class="container">
       <div class="detail-wrap">
         <div class="detail-grid">
-          <!-- Gallery -->
           <div>
             <div class="gallery-main" id="galleryMain">
               <div class="main-emoji" style="font-size:160px;">${p.emoji}</div>
@@ -377,19 +408,18 @@ function renderDetail(id) {
                 <div class="gallery-thumb${i === 0 ? ' active' : ''}" onclick="selectThumb(this, '${em}')">${em}</div>`).join('')}
             </div>
           </div>
-          <!-- Info -->
           <div class="fade-up">
             <div class="detail-breadcrumb">
               <span onclick="nav('home')">Home</span><span class="sep">›</span>
               <span onclick="nav('shop')">Shop</span><span class="sep">›</span>
-              <span style="color:var(--ash);">${p.name}</span>
+              <span style="color:var(--text-secondary);">${p.name}</span>
             </div>
             ${p.badge ? `<div style="margin-bottom:12px;">${badgeHTML(p.badge)}</div>` : ''}
             <div class="detail-brand">${p.brand}</div>
             <h1 class="detail-title">${p.name}</h1>
             <div class="detail-rating">
               ${stars(p.rating, 16)}
-              <span style="font-size:14px;font-weight:600;color:var(--cream);">${p.rating}</span>
+              <span style="font-size:14px;font-weight:600;color:var(--text-primary);">${p.rating}</span>
               <span class="review-count">(${p.reviews.toLocaleString()} reviews)</span>
             </div>
             <div class="detail-price-row">
@@ -406,7 +436,7 @@ function renderDetail(id) {
               </div>
             </div>
             <div class="detail-actions">
-              <button class="btn btn-gold btn-lg" style="flex:1;" onclick="addToCart(${p.id}, state.qty)">
+              <button class="btn btn-primary btn-lg" style="flex:1;" onclick="addToCart(${p.id}, state.qty)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
                 Add to Cart
               </button>
@@ -422,7 +452,6 @@ function renderDetail(id) {
           </div>
         </div>
 
-        <!-- Related -->
         <div class="section">
           <div class="section-header">
             <div><div class="section-eyebrow">You may also like</div><h2 class="section-title">Related Products</h2></div>
@@ -464,7 +493,7 @@ function renderCart() {
         <div class="empty-icon">🛒</div>
         <h2 class="empty-title">Your cart is empty</h2>
         <p class="empty-sub">Discover our latest collections</p>
-        <button class="btn btn-gold" onclick="nav('shop')">Browse Shop</button>
+        <button class="btn btn-primary" onclick="nav('shop')">Browse Shop</button>
       </div>`;
     return;
   }
@@ -502,15 +531,15 @@ function renderCart() {
         </div>
         <div class="summary-card fade-up delay-3">
           <h2 class="summary-title">Order Summary</h2>
-          <div class="summary-row"><span>Subtotal (${state.cart.reduce((s,c)=>s+c.qty,0)} items)</span><span>${fmt(sub)}</span></div>
-          <div class="summary-row"><span>Shipping</span><span style="color:var(--sage);">Free</span></div>
+          <div class="summary-row"><span>Subtotal (${state.cart.reduce((s, c) => s + c.qty, 0)} items)</span><span>${fmt(sub)}</span></div>
+          <div class="summary-row"><span>Shipping</span><span style="color:var(--badge-new);">Free</span></div>
           <div class="summary-row"><span>Tax (8%)</span><span>${fmt(tax)}</span></div>
           <div class="promo-row">
             <input class="promo-input" placeholder="Promo code" id="promoInput" />
             <button class="btn btn-outline btn-sm" onclick="applyPromo()">Apply</button>
           </div>
           <div class="summary-row total"><span>Total</span><span>${fmt(total)}</span></div>
-          <button class="btn btn-gold" style="width:100%;margin-top:20px;justify-content:center;" onclick="nav('checkout')">
+          <button class="btn btn-primary" style="width:100%;margin-top:20px;justify-content:center;" onclick="nav('checkout')">
             Proceed to Checkout
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
@@ -522,7 +551,7 @@ function renderCart() {
 
 function applyPromo() {
   const v = document.getElementById('promoInput')?.value.trim().toUpperCase();
-  if (v === 'MARCA10') toast('10% discount applied!', 'success');
+  if (v === 'OBM10') toast('10% discount applied!', 'success');
   else toast('Invalid promo code', 'error');
 }
 
@@ -547,8 +576,8 @@ function renderCheckout() {
             <div class="form-grid">
               <div class="form-field"><label>First Name</label><input class="form-input" placeholder="Sakil" /></div>
               <div class="form-field"><label>Last Name</label><input class="form-input" placeholder="Ahmed" /></div>
-              <div class="form-field full"><label>Email Address</label><input class="form-input" type="email" placeholder="sakil@marca.co" /></div>
-              <div class="form-field full"><label>Street Address</label><input class="form-input" placeholder="123 Market Street" /></div>
+              <div class="form-field full"><label>Email Address</label><input class="form-input" type="email" placeholder="sakil@obmstudio.co" /></div>
+              <div class="form-field full"><label>Street Address</label><input class="form-input" placeholder="123 Studio Lane" /></div>
               <div class="form-field"><label>City</label><input class="form-input" placeholder="Tiruppur" /></div>
               <div class="form-field"><label>Pin Code</label><input class="form-input" placeholder="641604" /></div>
               <div class="form-field"><label>State</label><input class="form-input" placeholder="Tamil Nadu" /></div>
@@ -580,17 +609,17 @@ function renderCheckout() {
           <div class="summary-card fade-up delay-3">
             <h2 class="summary-title">Order</h2>
             ${state.cart.slice(0, 3).map(item => `
-              <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--ink-mid);">
+              <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border);">
                 <div style="font-size:26px;">${item.emoji}</div>
-                <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--cream);">${item.name.substring(0,28)}…</div><div style="font-size:11px;color:var(--smoke);">Qty: ${item.qty}</div></div>
-                <div style="font-weight:700;color:var(--gold);font-size:14px;">${fmt(item.price * item.qty)}</div>
+                <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text-primary);">${item.name.substring(0, 28)}…</div><div style="font-size:11px;color:var(--text-muted);">Qty: ${item.qty}</div></div>
+                <div style="font-weight:700;color:var(--primary-color);font-size:14px;">${fmt(item.price * item.qty)}</div>
               </div>`).join('')}
-            ${state.cart.length > 3 ? `<div style="font-size:12px;color:var(--smoke);text-align:center;margin-bottom:12px;">+${state.cart.length - 3} more items</div>` : ''}
+            ${state.cart.length > 3 ? `<div style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:12px;">+${state.cart.length - 3} more items</div>` : ''}
             <div class="summary-row"><span>Subtotal</span><span>${fmt(sub)}</span></div>
-            <div class="summary-row"><span>Shipping</span><span style="color:var(--sage);">Free</span></div>
+            <div class="summary-row"><span>Shipping</span><span style="color:var(--badge-new);">Free</span></div>
             <div class="summary-row"><span>Tax (8%)</span><span>${fmt(tax)}</span></div>
             <div class="summary-row total"><span>Total</span><span>${fmt(total)}</span></div>
-            <button class="btn btn-gold" style="width:100%;margin-top:24px;justify-content:center;" onclick="placeOrder()">
+            <button class="btn btn-primary" style="width:100%;margin-top:24px;justify-content:center;" onclick="placeOrder()">
               Place Order
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </button>
@@ -606,7 +635,7 @@ function selectPay(el) {
 }
 
 function placeOrder() {
-  const orderId = 'MRC-' + Date.now().toString().slice(-8);
+  const orderId = 'OBM-' + Date.now().toString().slice(-8);
   document.getElementById('successOrderId').textContent = orderId;
   state.cart = [];
   updateCartBadge();
@@ -621,11 +650,11 @@ function trackOrder() {
   if (!val) { toast('Please enter an order ID', 'error'); return; }
 
   const steps = [
-    { label: 'Order Placed',     icon: '📋', time: 'Mar 10, 2025 · 10:32 AM', done: true  },
-    { label: 'Packed & Ready',   icon: '📦', time: 'Mar 11, 2025 · 2:15 PM',  done: true  },
-    { label: 'Shipped',          icon: '🚚', time: 'Mar 12, 2025 · 8:00 AM',  done: true  },
-    { label: 'Out for Delivery', icon: '🛵', time: 'Mar 13, 2025 · 9:00 AM',  current: true },
-    { label: 'Delivered',        icon: '🏠', time: 'Expected today by 6 PM',   done: false },
+    { label: 'Order Placed', icon: '📋', time: 'Mar 10, 2025 · 10:32 AM', done: true },
+    { label: 'Printed & Packed', icon: '📦', time: 'Mar 11, 2025 · 2:15 PM', done: true },
+    { label: 'Shipped', icon: '🚚', time: 'Mar 12, 2025 · 8:00 AM', done: true },
+    { label: 'Out for Delivery', icon: '🛵', time: 'Mar 13, 2025 · 9:00 AM', current: true },
+    { label: 'Delivered', icon: '🏠', time: 'Expected today by 6 PM', done: false },
   ];
   const doneCount = steps.filter(s => s.done).length;
   const fillPct = doneCount / (steps.length - 1) * 100;
@@ -635,7 +664,7 @@ function trackOrder() {
       <div class="tracking-top">
         <div>
           <div class="track-order-id">${val}</div>
-          <div style="font-size:13px;color:var(--smoke);margin-top:4px;">Nike Therma-Fit Hoodie · 1 item</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Premium Wedding Album · 1 item</div>
         </div>
         <div class="track-status-badge">Out for Delivery</div>
       </div>
@@ -686,7 +715,7 @@ function renderProfileTab(tab, triggerEl) {
             <div class="order-card-meta">${o.id} · ${o.date}</div>
           </div>
           <div style="text-align:right;flex-shrink:0;">
-            <div style="font-weight:700;color:var(--gold);margin-bottom:6px;">${fmt(o.price)}</div>
+            <div style="font-weight:700;color:var(--primary-color);margin-bottom:6px;">${fmt(o.price)}</div>
             <div class="order-status-chip status-${o.status}">${o.status === 'delivered' ? 'Delivered' : o.status === 'transit' ? 'In Transit' : 'Processing'}</div>
           </div>
         </div>`).join('')}`;
@@ -694,7 +723,7 @@ function renderProfileTab(tab, triggerEl) {
     const wl = PRODUCTS.filter(p => state.wishlist.includes(p.id));
     el.innerHTML = `
       <h2 class="headline" style="margin-bottom:28px;">Wishlist</h2>
-      ${wl.length ? `<div class="products-grid">${wl.map(p => productCardHTML(p)).join('')}</div>` : '<div class="empty-state"><div class="empty-icon">♥</div><h2 class="empty-title">No saved items</h2><p class="empty-sub">Heart a product to save it here</p><button class="btn btn-gold" onclick="nav(\'shop\')">Browse Shop</button></div>'}`;
+      ${wl.length ? `<div class="products-grid">${wl.map(p => productCardHTML(p)).join('')}</div>` : '<div class="empty-state"><div class="empty-icon">♥</div><h2 class="empty-title">No saved items</h2><p class="empty-sub">Heart a product to save it here</p><button class="btn btn-primary" onclick="nav(\'shop\')">Browse Shop</button></div>'}`;
   } else {
     el.innerHTML = `
       <h2 class="headline" style="margin-bottom:28px;">Account Settings</h2>
@@ -702,9 +731,9 @@ function renderProfileTab(tab, triggerEl) {
         <div class="form-grid">
           <div class="form-field"><label>First Name</label><input class="form-input" value="Sakil" /></div>
           <div class="form-field"><label>Last Name</label><input class="form-input" value="Ahmed" /></div>
-          <div class="form-field full"><label>Email</label><input class="form-input" type="email" value="sakil@honlor.app" /></div>
+          <div class="form-field full"><label>Email</label><input class="form-input" type="email" value="sakil@obmstudio.com" /></div>
         </div>
-        <button class="btn btn-gold" style="margin-top:20px;" onclick="toast('Settings saved','success')">Save Changes</button>
+        <button class="btn btn-primary" style="margin-top:20px;" onclick="toast('Settings saved','success')">Save Changes</button>
       </div>`;
   }
 }
@@ -720,7 +749,7 @@ function renderOrders() {
         <div class="order-card-meta">${o.id} · ${o.date}</div>
       </div>
       <div style="text-align:right;">
-        <div style="font-weight:700;color:var(--gold);margin-bottom:6px;">${fmt(o.price)}</div>
+        <div style="font-weight:700;color:var(--primary-color);margin-bottom:6px;">${fmt(o.price)}</div>
         <div class="order-status-chip status-${o.status}">${o.status === 'delivered' ? 'Delivered' : o.status === 'transit' ? 'In Transit' : 'Processing'}</div>
       </div>
     </div>`).join('');
@@ -735,6 +764,7 @@ window.onSortChange = () => renderShop();
 // INIT
 // ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   initHome();
   updateCartBadge();
   nav('home');
