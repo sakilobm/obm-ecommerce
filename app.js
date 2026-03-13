@@ -98,13 +98,13 @@ document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; })
 })();
 
 document.addEventListener('mouseover', e => {
-  if (e.target.closest('a, button, [data-hover], input, select, .cat-pill, .nav-btn, .brand-item, .star-filter-row, .del-opt, .footer-link, .profile-nav-item, .pay-option')) {
+  if (e.target.closest('a, button, [data-hover], input, select, .cat-pill, .nav-btn, .brand-item, .star-filter-row, .del-opt, .footer-link, .profile-nav-item, .pay-option, .gallery-item')) {
     cursor.style.width = '28px'; cursor.style.height = '28px';
     cursorRing.style.width = '56px'; cursorRing.style.height = '56px';
   }
 });
 document.addEventListener('mouseout', e => {
-  if (e.target.closest('a, button, [data-hover], input, select, .cat-pill, .nav-btn, .brand-item, .star-filter-row, .del-opt, .footer-link, .profile-nav-item, .pay-option')) {
+  if (e.target.closest('a, button, [data-hover], input, select, .cat-pill, .nav-btn, .brand-item, .star-filter-row, .del-opt, .footer-link, .profile-nav-item, .pay-option, .gallery-item')) {
     cursor.style.width = '12px'; cursor.style.height = '12px';
     cursorRing.style.width = '36px'; cursorRing.style.height = '36px';
   }
@@ -238,11 +238,14 @@ function productCardHTML(p, featured = false) {
   return `
     <div class="product-card${featured ? ' featured' : ''}" onclick="nav('detail', {product: ${p.id}})">
       <div class="card-image-wrap">
-        <div style="font-size:${featured ? 90 : 72}px; user-select:none;">${p.emoji}</div>
+        <div class="card-img-element" style="font-size:${featured ? 90 : 72}px; user-select:none; transition: transform 0.4s var(--ease-out);">${p.emoji}</div>
         ${badgeHTML(p.badge)}
         <div class="card-actions">
           <button class="btn btn-icon btn-sm${wished ? ' liked' : ''}" onclick="event.stopPropagation(); toggleWishlist(${p.id}, this)" title="Wishlist">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="${wished ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <button class="btn btn-icon btn-sm" onclick="event.stopPropagation(); nav('detail', {product: ${p.id}});" title="Quick View">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
       </div>

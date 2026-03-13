@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client Album Selection — Obm Studio</title>
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <nav id="navbar">
+        <div class="nav-inner">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span class="logo-dot"></span>Obm Studio
+            </div>
+
+            <div class="nav-links">
+                <button class="nav-btn theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" style="display: none;">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='index.html'">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    </svg>
+                    <span>Return Home</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div style="padding-top: calc(var(--nav-h) + 40px); min-height: 100vh;" class="container">
+
+        <div class="gallery-controls fade-up">
+            <div>
+                <h2 class="headline" style="font-size: 24px;">Album Selection</h2>
+                <div style="font-size: 14px; color: var(--text-muted); font-weight: 600;" id="selection-counter">0
+                    photos selected</div>
+            </div>
+            <button class="btn btn-primary" onclick="submitGallery()">Submit Selection</button>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid"></div>
+
+        <!-- SLIDE PREVIEW -->
+        <div class="photo-viewer" id="photoViewer">
+            <div class="viewer-overlay" onclick="closeViewer()"></div>
+
+            <div class="viewer-content">
+
+                <button class="viewer-nav left" onclick="prevPhoto()">‹</button>
+
+                <div class="viewer-image" id="viewerImage"></div>
+
+                <button class="viewer-nav right" onclick="nextPhoto()">›</button>
+
+                <div class="viewer-actions">
+
+                    <button class="btn btn-primary" onclick="toggleSelect(currentPhoto)">
+                        Select Photo
+                    </button>
+
+                    <button class="btn btn-outline" onclick="closeViewer()">
+                        Close
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-stack" id="toastStack"></div>
+
+    <script>
+        // ── THEME INITIALIZATION ──
+        function initTheme() {
+            const storedTheme = localStorage.getItem('obm-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', storedTheme);
+            updateThemeIcon(storedTheme);
+        }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('obm-theme', next);
+            updateThemeIcon(next);
+        }
+        function updateThemeIcon(theme) {
+            const sun = document.querySelector('.icon-sun');
+            const moon = document.querySelector('.icon-moon');
+            if (sun && moon) {
+                sun.style.display = theme === 'dark' ? 'block' : 'none';
+                moon.style.display = theme === 'dark' ? 'none' : 'block';
+            }
+        }
+        initTheme();
+
+        // ── CURSOR ──
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mx = -100, my = -100, rx = -100, ry = -100;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+        (function animateCursor() {
+            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+            rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+            cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
+            requestAnimationFrame(animateCursor);
+        })();
+        document.addEventListener('mouseover', e => {
+            if (e.target.closest('button, .gallery-item, a')) {
+                cursor.style.width = '28px'; cursor.style.height = '28px';
+                cursorRing.style.width = '56px'; cursorRing.style.height = '56px';
+            }
+        });
+        document.addEventListener('mouseout', e => {
+            if (e.target.closest('button, .gallery-item, a')) {
+                cursor.style.width = '12px'; cursor.style.height = '12px';
+                cursorRing.style.width = '36px'; cursorRing.style.height = '36px';
+            }
+        });
+
+        // ── GALLERY LOGIC ──
+        const emojis = ['📸', '👰', '🤵', '🥂', '💍', '💒', '💐', '🍾', '🕺', '💃'];
+        const photos = Array.from({ length: 24 }, (_, i) => ({ id: i + 1, emoji: emojis[i % emojis.length] }));
+        const selected = new Set();
+
+        const grid = document.getElementById('galleryGrid');
+        grid.innerHTML = photos.map((p, i) => `
+<div class="gallery-item fade-up"
+style="animation-delay: ${(i % 10) * 0.05}s"
+id="photo-${p.id}"
+onclick="openViewer(${p.id})">
+
+<div class="gallery-check">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+stroke="currentColor" stroke-width="3">
+<polyline points="20 6 9 17 4 12"/>
+</svg>
+</div>
+
+${p.emoji}
+
+</div>
+`).join('');
+
+        function toggleSelect(id) {
+            const el = document.getElementById(`photo-${id}`);
+            if (selected.has(id)) {
+                selected.delete(id);
+                el.classList.remove('selected');
+            } else {
+                selected.add(id);
+                el.classList.add('selected');
+            }
+            document.getElementById('selection-counter').innerText = `${selected.size} photos selected`;
+        }
+
+        function submitGallery() {
+            if (selected.size === 0) {
+                toast('Please select at least one photo', 'error');
+                return;
+            }
+            toast(`Successfully submitted ${selected.size} photos for your album!`, 'success');
+            setTimeout(() => { window.location.href = 'index.html'; }, 2200);
+        }
+
+        function toast(msg, type = 'default') {
+            const stack = document.getElementById('toastStack');
+            const icons = { success: '✓', error: '✕', default: '✦' };
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML = `<div class="toast-icon">${icons[type]}</div><span class="toast-text">${msg}</span>`;
+            stack.appendChild(t);
+            setTimeout(() => {
+                t.style.animation = 'toast-out 0.35s var(--ease-out) forwards';
+                setTimeout(() => t.remove(), 350);
+            }, 2800);
+        }
+
+        let currentPhoto = 0;
+
+        function openViewer(id) {
+
+            currentPhoto = id;
+
+            const photo = photos.find(p => p.id === id);
+
+            document.getElementById("viewerImage").innerHTML = photo.emoji;
+
+            document.getElementById("photoViewer").classList.add("active");
+
+        }
+
+        function closeViewer() {
+
+            document.getElementById("photoViewer").classList.remove("active");
+
+        }
+
+        function nextPhoto() {
+
+            currentPhoto++;
+
+            if (currentPhoto > photos.length) currentPhoto = 1;
+
+            openViewer(currentPhoto);
+
+        }
+
+        function prevPhoto() {
+
+            currentPhoto--;
+
+            if (currentPhoto < 1) currentPhoto = photos.length;
+
+            openViewer(currentPhoto);
+
+        }
+        document.addEventListener("keydown", (e) => {
+
+            if (!document.getElementById("photoViewer").classList.contains("active")) return;
+
+            if (e.key === "ArrowRight") nextPhoto();
+
+            if (e.key === "ArrowLeft") prevPhoto();
+
+            if (e.key === "Escape") closeViewer();
+
+        });
+    </script>
+</body>
+
+</html>
