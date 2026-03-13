@@ -263,7 +263,7 @@ function productCardHTML(p, featured = false) {
   return `
     <div class="product-card${featured ? ' featured' : ''}" onclick="nav('detail',{product:${p.id}})">
       <div class="card-image-wrap">
-        <div class="card-img-element" style="font-size:${featured ? 96 : 72}px;">${p.emoji}</div>
+        <div class="card-img-element" style="font-size:${featured ? 96 : 72}px;" alt="product">${p.emoji}</div>
         ${badgeHTML(p.badge)}
         <div class="card-actions">
           <button class="btn btn-icon btn-sm${wished ? ' liked' : ''}" onclick="event.stopPropagation();toggleWishlist(${p.id},this)" title="Wishlist">
