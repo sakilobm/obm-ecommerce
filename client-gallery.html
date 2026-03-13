@@ -1,248 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Client Album Selection — Obm Studio</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Client Gallery — Obm Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── Gallery-specific additions ── */
+    .gallery-filter-pill {
+      flex-shrink: 0; padding: 7px 18px; border-radius: var(--r-full);
+      border: 1.5px solid var(--border); background: transparent; cursor: none;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 600;
+      color: var(--text-secondary); transition: all 0.22s var(--ease-out);
+    }
+    .gallery-filter-pill:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-pale); }
+    .gallery-filter-pill.active { background: var(--primary-color); border-color: var(--primary-color); color: var(--primary-text); }
 
+    .gallery-item { position: relative; overflow: hidden; }
+    .gallery-item-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,0.6));
+      color: white; font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+      padding: 24px 12px 10px; opacity: 0; transition: opacity 0.3s;
+      text-align: center;
+    }
+    .gallery-item:hover .gallery-item-label { opacity: 1; }
+
+    .selection-bar {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--primary-color); color: var(--primary-text);
+      border-radius: var(--r-xl); padding: 14px 28px;
+      display: flex; align-items: center; gap: 20px;
+      box-shadow: var(--shadow-xl); z-index: 888;
+      transition: transform 0.4s var(--spring);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-width: 340px; justify-content: space-between;
+    }
+    .selection-bar.visible { transform: translateX(-50%) translateY(0); }
+    .selection-count { font-size: 13px; font-weight: 600; }
+    .selection-count span { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 400; }
+
+    .progress-ring { position: absolute; top: -1px; left: -1px; pointer-events: none; }
+    .gallery-item-num {
+      position: absolute; bottom: 10px; left: 10px; z-index: 2;
+      background: rgba(0,0,0,0.5); color: white;
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      padding: 2px 8px; border-radius: var(--r-full);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Masonry-style: some items taller */
+    .gallery-item:nth-child(5n+1) { grid-row: span 1; }
+    .gallery-item:nth-child(5n+3) { grid-row: span 1; }
+
+    /* Progress indicator */
+    .upload-progress {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-full); height: 4px; overflow: hidden;
+      margin-top: 8px; width: 200px;
+    }
+    .upload-progress-fill {
+      height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+      border-radius: var(--r-full); transition: width 0.4s var(--ease-out);
+    }
+
+    /* Viewer enhancements */
+    .viewer-counter {
+      position: absolute; top: -44px; left: 50%; transform: translateX(-50%);
+      font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+    }
+    .viewer-select-btn {
+      padding: 12px 28px; border-radius: var(--r-full); border: none; cursor: none;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.25s;
+    }
+    .viewer-select-btn.selected { background: var(--accent); color: white; }
+    .viewer-select-btn:not(.selected) { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(8px); }
+    .viewer-select-btn:hover { transform: translateY(-2px); }
+  </style>
 </head>
-
 <body>
 
-    <div id="cursor"></div>
-    <div id="cursor-ring"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-    <nav id="navbar">
-        <div class="nav-inner">
-            <div class="logo" onclick="window.location.href='index.html'">
-                <span class="logo-dot"></span>Obm Studio
-            </div>
-
-            <div class="nav-links">
-                <button class="nav-btn theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
-                    <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" style="display: none;">
-                        <circle cx="12" cy="12" r="5" />
-                        <path
-                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                    </svg>
-                    <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                    </svg>
-                </button>
-                <button class="nav-btn" onclick="window.location.href='index.html'">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                    </svg>
-                    <span>Return Home</span>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <div style="padding-top: calc(var(--nav-h) + 40px); min-height: 100vh;" class="container">
-
-        <div class="gallery-controls fade-up">
-            <div>
-                <h2 class="headline" style="font-size: 24px;">Album Selection</h2>
-                <div style="font-size: 14px; color: var(--text-muted); font-weight: 600;" id="selection-counter">0
-                    photos selected</div>
-            </div>
-            <button class="btn btn-primary" onclick="submitGallery()">Submit Selection</button>
-        </div>
-
-        <div class="gallery-grid" id="galleryGrid"></div>
-
-        <!-- SLIDE PREVIEW -->
-        <div class="photo-viewer" id="photoViewer">
-            <div class="viewer-overlay" onclick="closeViewer()"></div>
-
-            <div class="viewer-content">
-
-                <button class="viewer-nav left" onclick="prevPhoto()">‹</button>
-
-                <div class="viewer-image" id="viewerImage"></div>
-
-                <button class="viewer-nav right" onclick="nextPhoto()">›</button>
-
-                <div class="viewer-actions">
-
-                    <button class="btn btn-primary" onclick="toggleSelect(currentPhoto)">
-                        Select Photo
-                    </button>
-
-                    <button class="btn btn-outline" onclick="closeViewer()">
-                        Close
-                    </button>
-
-                </div>
-
-            </div>
-        </div>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="logo" onclick="window.location.href='index.html'">
+      <span class="logo-mark">O</span>
+      Obm Studio
     </div>
+    <div style="flex:1;"></div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);">
+      <div class="upload-progress">
+        <div class="upload-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <span id="progressLabel" style="font-family:'DM Mono',monospace;font-size:11px;">0 / 24 selected</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-btn theme-toggle-btn" onclick="toggleTheme()">
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='index.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span>Return Home</span>
+      </button>
+    </div>
+  </div>
+</nav>
 
-    <div class="toast-stack" id="toastStack"></div>
+<!-- MAIN -->
+<div style="padding-top:calc(var(--nav-h)+36px);min-height:100vh;padding-bottom:120px;" class="container">
 
-    <script>
-        // ── THEME INITIALIZATION ──
-        function initTheme() {
-            const storedTheme = localStorage.getItem('obm-theme') || 'light';
-            document.documentElement.setAttribute('data-theme', storedTheme);
-            updateThemeIcon(storedTheme);
-        }
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme') || 'light';
-            const next = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('obm-theme', next);
-            updateThemeIcon(next);
-        }
-        function updateThemeIcon(theme) {
-            const sun = document.querySelector('.icon-sun');
-            const moon = document.querySelector('.icon-moon');
-            if (sun && moon) {
-                sun.style.display = theme === 'dark' ? 'block' : 'none';
-                moon.style.display = theme === 'dark' ? 'none' : 'block';
-            }
-        }
-        initTheme();
+  <!-- Controls bar -->
+  <div class="gallery-controls fade-up">
+    <div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:500;margin-bottom:3px;">Wedding Album Selection</h2>
+      <div style="font-size:12px;color:var(--text-muted);">Rahul & Priya · June 2025 · Choose your favourites</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="btn btn-outline btn-sm" onclick="selectAll()">Select All</button>
+      <button class="btn btn-outline btn-sm" onclick="clearAll()" style="color:var(--red);border-color:rgba(181,75,75,0.3);">Clear</button>
+      <button class="btn btn-accent" onclick="submitGallery()">
+        Submit Selection
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+    </div>
+  </div>
 
-        // ── CURSOR ──
-        const cursor = document.getElementById('cursor');
-        const cursorRing = document.getElementById('cursor-ring');
-        let mx = -100, my = -100, rx = -100, ry = -100;
-        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-        (function animateCursor() {
-            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-            rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-            cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
-            requestAnimationFrame(animateCursor);
-        })();
-        document.addEventListener('mouseover', e => {
-            if (e.target.closest('button, .gallery-item, a')) {
-                cursor.style.width = '28px'; cursor.style.height = '28px';
-                cursorRing.style.width = '56px'; cursorRing.style.height = '56px';
-            }
-        });
-        document.addEventListener('mouseout', e => {
-            if (e.target.closest('button, .gallery-item, a')) {
-                cursor.style.width = '12px'; cursor.style.height = '12px';
-                cursorRing.style.width = '36px'; cursorRing.style.height = '36px';
-            }
-        });
+  <!-- Filter pills -->
+  <div style="display:flex;gap:8px;margin-bottom:24px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;" id="filterPills">
+    <button class="gallery-filter-pill active" onclick="filterGallery('all',this)">All Photos</button>
+    <button class="gallery-filter-pill" onclick="filterGallery('ceremony',this)">Ceremony</button>
+    <button class="gallery-filter-pill" onclick="filterGallery('reception',this)">Reception</button>
+    <button class="gallery-filter-pill" onclick="filterGallery('portraits',this)">Portraits</button>
+    <button class="gallery-filter-pill" onclick="filterGallery('details',this)">Details</button>
+    <button class="gallery-filter-pill" onclick="filterGallery('candid',this)">Candid</button>
+  </div>
 
-        // ── GALLERY LOGIC ──
-        const emojis = ['📸', '👰', '🤵', '🥂', '💍', '💒', '💐', '🍾', '🕺', '💃'];
-        const photos = Array.from({ length: 24 }, (_, i) => ({ id: i + 1, emoji: emojis[i % emojis.length] }));
-        const selected = new Set();
-
-        const grid = document.getElementById('galleryGrid');
-        grid.innerHTML = photos.map((p, i) => `
-<div class="gallery-item fade-up"
-style="animation-delay: ${(i % 10) * 0.05}s"
-id="photo-${p.id}"
-onclick="openViewer(${p.id})">
-
-<div class="gallery-check">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-stroke="currentColor" stroke-width="3">
-<polyline points="20 6 9 17 4 12"/>
-</svg>
+  <!-- Gallery grid -->
+  <div class="gallery-grid" id="galleryGrid"></div>
 </div>
 
-${p.emoji}
-
+<!-- PHOTO VIEWER -->
+<div class="photo-viewer" id="photoViewer">
+  <div class="viewer-overlay" onclick="closeViewer()"></div>
+  <div class="viewer-content">
+    <div class="viewer-counter" id="viewerCounter">1 / 24</div>
+    <button class="viewer-nav left" onclick="prevPhoto()">‹</button>
+    <div class="viewer-image" id="viewerImage">
+      <div id="viewerEmoji" style="font-size:130px;transition:opacity 0.2s,transform 0.2s;"></div>
+    </div>
+    <button class="viewer-nav right" onclick="nextPhoto()">›</button>
+    <div class="viewer-actions">
+      <button class="viewer-select-btn" id="viewerSelectBtn" onclick="toggleSelectCurrent()">♥ Select Photo</button>
+      <button style="padding:12px 24px;border-radius:var(--r-full);border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.1);color:white;cursor:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;backdrop-filter:blur(8px);transition:all 0.2s;" onclick="closeViewer()">Close · Esc</button>
+    </div>
+  </div>
 </div>
-`).join('');
 
-        function toggleSelect(id) {
-            const el = document.getElementById(`photo-${id}`);
-            if (selected.has(id)) {
-                selected.delete(id);
-                el.classList.remove('selected');
-            } else {
-                selected.add(id);
-                el.classList.add('selected');
-            }
-            document.getElementById('selection-counter').innerText = `${selected.size} photos selected`;
-        }
+<!-- Floating selection bar -->
+<div class="selection-bar" id="selectionBar">
+  <div class="selection-count"><span id="selBarCount">0</span> photos selected</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="btn btn-outline btn-sm" style="color:white;border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);" onclick="clearAll()">Clear</button>
+    <button class="btn btn-accent btn-sm" onclick="submitGallery()">Submit →</button>
+  </div>
+</div>
 
-        function submitGallery() {
-            if (selected.size === 0) {
-                toast('Please select at least one photo', 'error');
-                return;
-            }
-            toast(`Successfully submitted ${selected.size} photos for your album!`, 'success');
-            setTimeout(() => { window.location.href = 'index.html'; }, 2200);
-        }
+<div class="toast-stack" id="toastStack"></div>
 
-        function toast(msg, type = 'default') {
-            const stack = document.getElementById('toastStack');
-            const icons = { success: '✓', error: '✕', default: '✦' };
-            const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            t.innerHTML = `<div class="toast-icon">${icons[type]}</div><span class="toast-text">${msg}</span>`;
-            stack.appendChild(t);
-            setTimeout(() => {
-                t.style.animation = 'toast-out 0.35s var(--ease-out) forwards';
-                setTimeout(() => t.remove(), 350);
-            }, 2800);
-        }
+<script>
+// ── THEME ──
+function initTheme() {
+  const t = localStorage.getItem('obm-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  updateThemeIcon(t);
+}
+function toggleTheme() {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('obm-theme', next);
+  updateThemeIcon(next);
+}
+function updateThemeIcon(theme) {
+  const sun = document.querySelector('.icon-sun');
+  const moon = document.querySelector('.icon-moon');
+  if (sun && moon) { sun.style.display = theme === 'dark' ? 'block' : 'none'; moon.style.display = theme === 'dark' ? 'none' : 'block'; }
+}
+initTheme();
 
-        let currentPhoto = 0;
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animateCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11;
+  cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
+  requestAnimationFrame(animateCursor);
+})();
+document.addEventListener('mouseover', e => {
+  if (e.target.closest('button,.gallery-item,a')) { cursor.classList.add('cursor-large'); cursorRing.classList.add('cursor-large'); }
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.closest('button,.gallery-item,a')) { cursor.classList.remove('cursor-large'); cursorRing.classList.remove('cursor-large'); }
+});
 
-        function openViewer(id) {
+// ── GALLERY DATA ──
+const EMOJIS = ['📸','👰','🤵','🥂','💍','💒','💐','🍾','🕺','💃','🎊','🌸','🎶','🫶','🌅','🥰','✨','🎁','🪷','🕊️','👑','🌹','🫂','💫'];
+const CATEGORIES_G = ['ceremony','reception','portraits','ceremony','details','candid','reception','portraits','ceremony','candid','details','reception','ceremony','portraits','candid','reception','details','ceremony','portraits','candid','reception','ceremony','details','portraits'];
+const photos = Array.from({length:24}, (_,i) => ({
+  id: i+1,
+  emoji: EMOJIS[i % EMOJIS.length],
+  category: CATEGORIES_G[i],
+  label: ['Ceremony', 'First Kiss', 'Ring Exchange', 'Reception Dance', 'Bouquet Toss', 'Couple Portrait', 'Table Setting', 'First Dance', 'Family Group', 'Candid Laugh', 'Floral Detail', 'Reception Toast', 'Vows Moment', 'Bride Portrait', 'Groom Portrait', 'Cake Cutting', 'Sunset Portrait', 'Group Dance', 'Floral Arch', 'Candid Joy', 'Reception Band', 'Exit Sparklers', 'Ring Detail', 'Getting Ready'][i]
+}));
 
-            currentPhoto = id;
+const selected = new Set();
+let currentPhoto = 1;
+let visiblePhotos = [...photos];
 
-            const photo = photos.find(p => p.id === id);
+// ── RENDER GRID ──
+function renderGrid(list) {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = list.map((p, i) => `
+    <div class="gallery-item fade-up" id="photo-${p.id}"
+      style="animation-delay:${(i % 12) * 0.04}s;"
+      onclick="openViewer(${p.id})">
+      <div class="gallery-check">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="gallery-item-num">${p.id}</div>
+      <div style="font-size:58px;user-select:none;filter:drop-shadow(0 8px 16px rgba(0,0,0,0.1));">${p.emoji}</div>
+      <div class="gallery-item-label">${p.label}</div>
+    </div>`).join('');
 
-            document.getElementById("viewerImage").innerHTML = photo.emoji;
+  // Re-apply selected state
+  selected.forEach(id => {
+    document.getElementById(`photo-${id}`)?.classList.add('selected');
+  });
+}
+renderGrid(photos);
 
-            document.getElementById("photoViewer").classList.add("active");
+// ── FILTER ──
+function filterGallery(cat, btn) {
+  document.querySelectorAll('.gallery-filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  visiblePhotos = cat === 'all' ? [...photos] : photos.filter(p => p.category === cat);
+  renderGrid(visiblePhotos);
+}
 
-        }
+// ── SELECTION ──
+function toggleSelect(id) {
+  const el = document.getElementById(`photo-${id}`);
+  if (!el) return;
+  if (selected.has(id)) { selected.delete(id); el.classList.remove('selected'); }
+  else { selected.add(id); el.classList.add('selected'); }
+  updateSelectionUI();
+  updateViewerBtn();
+}
+function selectAll() { photos.forEach(p => { selected.add(p.id); document.getElementById(`photo-${p.id}`)?.classList.add('selected'); }); updateSelectionUI(); updateViewerBtn(); toast(`All ${photos.length} photos selected`, 'success'); }
+function clearAll() { selected.forEach(id => document.getElementById(`photo-${id}`)?.classList.remove('selected')); selected.clear(); updateSelectionUI(); updateViewerBtn(); }
 
-        function closeViewer() {
+function updateSelectionUI() {
+  const n = selected.size;
+  document.getElementById('progressLabel').textContent = `${n} / ${photos.length} selected`;
+  document.getElementById('progressFill').style.width = (n / photos.length * 100) + '%';
+  document.getElementById('selBarCount').textContent = n;
+  const bar = document.getElementById('selectionBar');
+  bar.classList.toggle('visible', n > 0);
+}
 
-            document.getElementById("photoViewer").classList.remove("active");
+function submitGallery() {
+  if (!selected.size) { toast('Please select at least one photo', 'error'); return; }
+  toast(`✓ ${selected.size} photos submitted successfully!`, 'success');
+  setTimeout(() => window.location.href = 'index.html', 2200);
+}
 
-        }
+// ── VIEWER ──
+function openViewer(id) {
+  currentPhoto = id;
+  const p = photos.find(x => x.id === id);
+  if (!p) return;
+  const emojiEl = document.getElementById('viewerEmoji');
+  emojiEl.style.opacity = '0'; emojiEl.style.transform = 'scale(0.8)';
+  setTimeout(() => { emojiEl.textContent = p.emoji; emojiEl.style.opacity = '1'; emojiEl.style.transform = 'scale(1)'; }, 100);
+  updateViewerBtn();
+  const idx = photos.findIndex(x => x.id === id);
+  document.getElementById('viewerCounter').textContent = `${idx + 1} / ${photos.length}  ·  ${p.label}`;
+  document.getElementById('photoViewer').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeViewer() {
+  document.getElementById('photoViewer').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function nextPhoto() {
+  const idx = photos.findIndex(x => x.id === currentPhoto);
+  const next = photos[(idx + 1) % photos.length];
+  openViewer(next.id);
+}
+function prevPhoto() {
+  const idx = photos.findIndex(x => x.id === currentPhoto);
+  const prev = photos[(idx - 1 + photos.length) % photos.length];
+  openViewer(prev.id);
+}
+function toggleSelectCurrent() {
+  toggleSelect(currentPhoto);
+}
+function updateViewerBtn() {
+  const btn = document.getElementById('viewerSelectBtn');
+  if (!btn) return;
+  const isSel = selected.has(currentPhoto);
+  btn.classList.toggle('selected', isSel);
+  btn.textContent = isSel ? '✓ Selected' : '♥ Select Photo';
+}
 
-        function nextPhoto() {
+// ── KEYBOARD ──
+document.addEventListener('keydown', e => {
+  const viewerOpen = document.getElementById('photoViewer').classList.contains('active');
+  if (viewerOpen) {
+    if (e.key === 'ArrowRight') nextPhoto();
+    if (e.key === 'ArrowLeft') prevPhoto();
+    if (e.key === 'Escape') closeViewer();
+    if (e.key === ' ') { e.preventDefault(); toggleSelectCurrent(); }
+  }
+});
 
-            currentPhoto++;
+// Scroll reveal
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
 
-            if (currentPhoto > photos.length) currentPhoto = 1;
-
-            openViewer(currentPhoto);
-
-        }
-
-        function prevPhoto() {
-
-            currentPhoto--;
-
-            if (currentPhoto < 1) currentPhoto = photos.length;
-
-            openViewer(currentPhoto);
-
-        }
-        document.addEventListener("keydown", (e) => {
-
-            if (!document.getElementById("photoViewer").classList.contains("active")) return;
-
-            if (e.key === "ArrowRight") nextPhoto();
-
-            if (e.key === "ArrowLeft") prevPhoto();
-
-            if (e.key === "Escape") closeViewer();
-
-        });
-    </script>
+// ── TOAST ──
+function toast(msg, type = 'default') {
+  const stack = document.getElementById('toastStack');
+  const icons = { success: '✓', error: '✕', default: '✦' };
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<div class="toast-icon">${icons[type]}</div><span class="toast-text">${msg}</span>`;
+  stack.appendChild(t);
+  setTimeout(() => { t.style.animation = 'toast-out 0.35s var(--ease-out) forwards'; setTimeout(() => t.remove(), 350); }, 2800);
+}
+</script>
 </body>
-
 </html>

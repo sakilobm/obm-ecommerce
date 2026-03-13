@@ -1,522 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Obm Studio — Premium Photo Studio E-commerce</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Obm Studio — Premium Photo Products</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
-
 <body>
 
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-  <nav id="navbar">
-    <div class="nav-inner">
-      <div class="logo" onclick="nav('home')">
-        <span class="logo-dot"></span>Obm Studio
-      </div>
-
-      <div class="nav-search">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.35-4.35" />
-        </svg>
-        <input type="text" placeholder="Search products, brands…" id="searchInput" />
-      </div>
-
-      <div class="nav-links">
-        <button class="nav-btn theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
-          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" style="display: none;">
-            <circle cx="12" cy="12" r="5" />
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-          </svg>
-          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        </button>
-        <button class="nav-btn" onclick="window.location.href='client-gallery.html'">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <polyline points="21 15 16 10 5 21" />
-          </svg>
-          <span>Gallery</span>
-        </button>
-        <button class="nav-btn" onclick="nav('home')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          </svg>
-          <span>Home</span>
-        </button>
-        <button class="nav-btn" onclick="nav('shop')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <span>Shop</span>
-        </button>
-        <button class="nav-btn" onclick="nav('orders')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="3" width="20" height="14" rx="2" />
-            <path d="m8 21 4-4 4 4" />
-          </svg>
-          <span>Orders</span>
-        </button>
-        <button class="nav-btn" style="position:relative;" onclick="nav('cart')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0" />
-          </svg>
-          <span>Cart</span>
-          <span class="nav-badge" id="cartBadge" style="display:none;">0</span>
-        </button>
-        <button class="avatar-btn" onclick="nav('profile')">SK</button>
-      </div>
+<!-- ── NAVBAR ── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="logo" onclick="nav('home')">
+      <span class="logo-mark">O</span>
+      Obm Studio
     </div>
-  </nav>
 
-  <div id="page-home" class="page active">
+    <div class="nav-search" style="position:relative;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search products… (⌘K)" id="searchInput"/>
+      <div id="searchDropdown"></div>
+    </div>
 
-    <section class="hero container" style="padding-top: var(--nav-h);">
-      <div class="hero-left fade-up">
-        <div class="hero-eyebrow">
-          <div class="eyebrow-line"></div>
-          <span class="label label-accent">Studio Collection · 2025</span>
-        </div>
-        <h1 class="display">Preserve your<br><em>memories</em> with<br>premium prints</h1>
-        <p class="hero-sub">Custom photo frames, wedding albums, and personalized gifts crafted with studio-quality
-          precision.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary btn-lg" onclick="nav('shop')">
-            Explore Shop
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </button>
-          <button class="btn btn-outline btn-lg" onclick="nav('tracking')">Track Order</button>
-        </div>
-        <div class="hero-stats">
-          <div>
-            <div class="hero-stat-num">50K+</div>
-            <div class="hero-stat-label">Prints Made</div>
-          </div>
-          <div>
-            <div class="hero-stat-num">2M+</div>
-            <div class="hero-stat-label">Happy Clients</div>
-          </div>
-          <div>
-            <div class="hero-stat-num">4.9★</div>
-            <div class="hero-stat-label">Rating</div>
-          </div>
-          <div>
-            <div class="hero-stat-num">190+</div>
-            <div class="hero-stat-label">Countries</div>
-          </div>
-        </div>
-      </div>
-      <div class="hero-right">
-        <div class="hero-geo geo-circle"></div>
-        <div class="hero-geo geo-circle-2"></div>
-        <div class="hero-image-main">📸</div>
-        <div class="hero-float-card f1">
-          <div class="dot" style="background:#22c55e;"></div>
-          <span style="font-size:12px;">Free shipping over $50</span>
-        </div>
-        <div class="hero-float-card f2">
-          <div class="dot" style="background:var(--accent-gold);"></div>
-          <span style="font-size:12px;">⭐ 4.9 · Studio Quality</span>
-        </div>
-        <div class="hero-float-card f3">
-          <div class="dot" style="background:var(--primary-color);"></div>
-          <span style="font-size:12px;">Color-perfect guarantee</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section container">
-      <div class="section-header fade-up">
-        <div>
-          <div class="section-eyebrow">Browse by Category</div>
-          <h2 class="section-title">Everything you need</h2>
-        </div>
-        <button class="btn btn-ghost" onclick="nav('shop')">View All →</button>
-      </div>
-      <div class="cats-grid" id="homeFeatCats"></div>
-    </section>
-
-    <section class="section container">
-      <div class="promo-banner fade-up">
-        <div class="promo-content">
-          <div class="promo-tag">Limited Offer</div>
-          <h2 class="promo-title">Up to <em>40% off</em><br>Wedding Albums</h2>
-          <p class="promo-sub">Premium layflat albums at unbeatable prices. Preserve your special day—this weekend only.
-          </p>
-          <button class="btn btn-primary btn-lg" onclick="nav('shop', {cat:'Albums'})">
-            Shop the Sale
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-        <div class="promo-visual">
-          <div class="promo-geo" style="width:300px;height:300px;top:-50px;right:-50px;"></div>
-          <div class="promo-geo" style="width:200px;height:200px;bottom:20px;left:20px;"></div>
-          <span
-            style="font-size:110px;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.1));animation:float-hero 5s ease-in-out infinite;">🖼️</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section container">
-      <div class="section-header fade-up">
-        <div>
-          <div class="section-eyebrow">Trending Now</div>
-          <h2 class="section-title">Most loved this week</h2>
-        </div>
-        <button class="btn btn-ghost" onclick="nav('shop')">See All →</button>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;"
-        id="homeTrendingGrid"></div>
-    </section>
-
-    <section class="section container">
-      <div
-        style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;position:relative;transition:background-color 0.4s ease, border-color 0.4s ease;">
-        <div
-          style="position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,var(--primary-light) 0%,transparent 70%);top:-150px;left:50%;transform:translateX(-50%);pointer-events:none;">
-        </div>
-        <div class="newsletter">
-          <div class="section-eyebrow" style="margin-bottom:12px;">Newsletter</div>
-          <h2 class="headline" style="margin-bottom:10px;">Stay in the know</h2>
-          <p style="color:var(--text-muted);font-size:14px;">Exclusive drops, early access, and creative ideas —
-            delivered
-            weekly.</p>
-          <form class="newsletter-form"
-            onsubmit="event.preventDefault();toast('Subscribed! Welcome to Obm Studio.','success');">
-            <input class="newsletter-input" type="email" placeholder="your@email.com" required />
-            <button class="btn btn-primary" type="submit">Subscribe</button>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <div class="footer-logo"><span
-                style="width:7px;height:7px;border-radius:50%;background:var(--primary-color);display:inline-block;margin-right:6px;"></span>Obm
-              Studio
-            </div>
-            <p class="footer-brand-sub">Premium photo printing and studio services. Turn your favorite moments into
-              timeless art.</p>
-            <div class="footer-social">
-              <div class="social-icon">𝕏</div>
-              <div class="social-icon">in</div>
-              <div class="social-icon">ig</div>
-              <div class="social-icon">yt</div>
-            </div>
-          </div>
-          <div>
-            <div class="footer-col-title">Shop</div>
-            <a class="footer-link" onclick="nav('shop')">All Products</a>
-            <a class="footer-link" onclick="nav('shop',{cat:'Photo Frames'})">Photo Frames</a>
-            <a class="footer-link" onclick="nav('shop',{cat:'Albums'})">Albums</a>
-            <a class="footer-link" onclick="nav('shop',{cat:'Wall Frames'})">Wall Frames</a>
-            <a class="footer-link" onclick="nav('shop',{cat:'Gift Prints'})">Gift Prints</a>
-          </div>
-          <div>
-            <div class="footer-col-title">Help</div>
-            <a class="footer-link" onclick="nav('tracking')">Track Order</a>
-            <a class="footer-link">Returns</a>
-            <a class="footer-link">Shipping</a>
-            <a class="footer-link">FAQ</a>
-            <a class="footer-link">Contact Us</a>
-          </div>
-          <div>
-            <div class="footer-col-title">Company</div>
-            <a class="footer-link">About</a>
-            <a class="footer-link">Careers</a>
-            <a class="footer-link">Press</a>
-            <a class="footer-link">Blog</a>
-            <a class="footer-link">Investors</a>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <span class="footer-copy">© 2025 Obm Studio. All rights reserved.</span>
-          <div class="footer-legal">
-            <a>Privacy Policy</a>
-            <a>Terms of Service</a>
-            <a>Cookie Settings</a>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <div id="page-shop" class="page">
-    <div class="container">
-      <div class="cat-strip" id="shopCatPills"></div>
-      <div class="shop-layout">
-        <aside class="sidebar">
-          <div class="filter-section">
-            <div class="filter-title">
-              Price Range
-              <button class="filter-reset">Reset</button>
-            </div>
-            <div class="price-display">
-              <span class="price-tag" id="priceMinLabel">$0</span>
-              <span class="price-tag" id="priceMaxLabel">$1200</span>
-            </div>
-            <div class="range-track">
-              <div class="range-fill" id="priceFill" style="left:0;width:100%;"></div>
-              <input type="range" class="range-slider" id="priceMin" min="0" max="1200" value="0" step="10" />
-              <input type="range" class="range-slider" id="priceMax" min="0" max="1200" value="1200" step="10" />
-            </div>
-          </div>
-
-          <div class="filter-section">
-            <div class="filter-title">Star Rating</div>
-            <div id="starFilters"></div>
-          </div>
-
-          <div class="filter-section">
-            <div class="filter-title">
-              Brand
-              <button class="filter-reset">Reset</button>
-            </div>
-            <div id="brandList"></div>
-            <button class="btn btn-ghost btn-sm" style="margin-top:6px;padding-left:0;">More brands →</button>
-          </div>
-
-          <div class="filter-section">
-            <div class="filter-title">Delivery</div>
-            <div class="del-toggle">
-              <div class="del-opt active" onclick="selectDel(this)">Standard</div>
-              <div class="del-opt" onclick="selectDel(this)">Express</div>
-              <div class="del-opt" onclick="selectDel(this)">Pick Up</div>
-            </div>
-          </div>
-        </aside>
-
-        <div>
-          <div class="grid-header">
-            <span class="results-count" id="shopCount">12 items</span>
-            <select class="sort-select" id="shopSort" onchange="onSortChange()">
-              <option value="featured">Featured</option>
-              <option value="popular">Most Popular</option>
-              <option value="price-asc">Price: Low → High</option>
-              <option value="price-desc">Price: High → Low</option>
-              <option value="rating">Best Rated</option>
-            </select>
-          </div>
-          <div class="products-grid" id="shopGrid"></div>
-        </div>
-      </div>
+    <div class="nav-links">
+      <button class="nav-btn theme-toggle-btn" onclick="toggleTheme()" title="Toggle theme">
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='client-gallery.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>Gallery</span>
+      </button>
+      <button class="nav-btn" onclick="nav('home')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" onclick="nav('shop')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <span>Shop</span>
+      </button>
+      <button class="nav-btn" onclick="nav('orders')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m8 21 4-4 4 4"/></svg>
+        <span>Orders</span>
+      </button>
+      <button class="nav-btn" style="position:relative;" onclick="nav('cart')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+        <span>Cart</span>
+        <span class="nav-badge" id="cartBadge" style="display:none;">0</span>
+      </button>
+      <button class="avatar-btn" onclick="nav('profile')">SK</button>
     </div>
   </div>
+</nav>
 
-  <div id="page-detail" class="page">
-    <div id="detailContent"></div>
-  </div>
+<!-- ══════════════════════════════════
+     HOME PAGE
+══════════════════════════════════ -->
+<div id="page-home" class="page active">
 
-  <div id="page-cart" class="page">
-    <div id="cartContent"></div>
-  </div>
-
-  <div id="page-checkout" class="page">
-    <div id="checkoutContent"></div>
-  </div>
-
-  <div id="page-success" class="page">
-    <div class="success-wrap container">
-      <div class="success-icon-wrap">
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+  <section class="hero container" style="padding-top:var(--nav-h);">
+    <div class="hero-left fade-up">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="label" style="color:var(--accent);">Studio Collection · 2025</span>
       </div>
-      <h1 class="success-h">Order Confirmed!</h1>
-      <p class="success-sub">Thank you for shopping with Obm Studio. Your order has been received and will be crafted
-        soon.</p>
-      <div class="order-pill" id="successOrderId">OBM-00000000</div>
-
-      <div class="success-track-preview">
-        <div class="stp">
-          <div class="stp-dot">✓</div>
-          <div class="stp-label">Placed</div>
-        </div>
-        <div class="stp-line done" style="margin-top:15px;"></div>
-        <div class="stp">
-          <div class="stp-dot pending" style="font-size:14px;">📦</div>
-          <div class="stp-label">Packing</div>
-        </div>
-        <div class="stp-line" style="margin-top:15px;"></div>
-        <div class="stp">
-          <div class="stp-dot pending" style="font-size:14px;">🚚</div>
-          <div class="stp-label">Shipped</div>
-        </div>
-        <div class="stp-line" style="margin-top:15px;"></div>
-        <div class="stp">
-          <div class="stp-dot pending" style="font-size:14px;">🏠</div>
-          <div class="stp-label">Delivered</div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <h1 class="display">Preserve your<br><em>memories</em> with<br>premium prints</h1>
+      <p class="hero-sub">Custom photo frames, wedding albums, and personalised gifts crafted with studio-quality precision.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" onclick="nav('shop')">
+          Explore Shop
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
         <button class="btn btn-outline btn-lg" onclick="nav('tracking')">Track Order</button>
-        <button class="btn btn-primary btn-lg" onclick="nav('shop')">Continue Shopping</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hero-stat-num">50K+</div><div class="hero-stat-label">Prints Made</div></div>
+        <div><div class="hero-stat-num">4.9★</div><div class="hero-stat-label">Avg Rating</div></div>
+        <div><div class="hero-stat-num">190+</div><div class="hero-stat-label">Countries</div></div>
+        <div><div class="hero-stat-num">99%</div><div class="hero-stat-label">Satisfied</div></div>
       </div>
     </div>
-  </div>
+    <div class="hero-right">
+      <div class="hero-geo geo-circle"></div>
+      <div class="hero-geo geo-circle-2"></div>
+      <div class="hero-image-main">📸</div>
+      <div class="hero-float-card f1"><div class="dot" style="background:#22c55e;"></div><span>Free shipping over $50</span></div>
+      <div class="hero-float-card f2"><div class="dot" style="background:var(--accent);"></div><span>⭐ 4.9 · Studio Quality</span></div>
+      <div class="hero-float-card f3"><div class="dot" style="background:var(--blue);"></div><span>Color-perfect guarantee</span></div>
+    </div>
+  </section>
 
-  <div id="page-tracking" class="page">
+  <section class="section container">
+    <div class="section-header fade-up">
+      <div><div class="section-eyebrow">Browse by Category</div><h2 class="section-title">Everything you need</h2></div>
+      <button class="btn btn-ghost" onclick="nav('shop')">View All →</button>
+    </div>
+    <div class="cats-grid" id="homeFeatCats"></div>
+  </section>
+
+  <section class="section container">
+    <div class="promo-banner fade-up">
+      <div class="promo-content">
+        <div class="promo-tag">Limited Offer</div>
+        <h2 class="promo-title">Up to <em>40% off</em><br>Wedding Albums</h2>
+        <p class="promo-sub">Premium layflat albums at unbeatable prices. Preserve your special day — this weekend only.</p>
+        <button class="btn btn-accent btn-lg" onclick="nav('shop',{cat:'Albums'})">
+          Shop the Sale
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="promo-visual">
+        <div class="promo-geo" style="width:320px;height:320px;top:-60px;right:-60px;"></div>
+        <div class="promo-geo" style="width:220px;height:220px;bottom:20px;left:20px;"></div>
+        <span style="font-size:110px;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.08));animation:float-hero 5s ease-in-out infinite;">🖼️</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="section-header fade-up">
+      <div><div class="section-eyebrow">Trending Now</div><h2 class="section-title">Most loved this week</h2></div>
+      <button class="btn btn-ghost" onclick="nav('shop')">See All →</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;" id="homeTrendingGrid"></div>
+  </section>
+
+  <section class="section container">
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-2xl);overflow:hidden;position:relative;">
+      <div style="position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,var(--accent-light) 0%,transparent 70%);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none;"></div>
+      <div class="newsletter">
+        <div class="section-eyebrow" style="margin-bottom:12px;">Newsletter</div>
+        <h2 class="headline" style="margin-bottom:10px;">Stay in the know</h2>
+        <p style="color:var(--text-muted);font-size:14px;line-height:1.8;">Exclusive drops, early access, and creative ideas — delivered weekly.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();toast('Subscribed! Welcome to Obm Studio. 🎉','success');">
+          <input class="newsletter-input" type="email" placeholder="your@email.com" required/>
+          <button class="btn btn-accent" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
     <div class="container">
-      <div class="tracking-wrap">
-        <div class="section-eyebrow" style="margin-bottom:8px;">Track Your Order</div>
-        <h1 class="headline fade-up" style="margin-bottom:32px;">Order Tracking</h1>
-        <div class="track-input-row">
-          <input class="form-input" id="trackInput" placeholder="Enter order ID (e.g. OBM-2025-00234)"
-            style="flex:1;" />
-          <button class="btn btn-primary" onclick="trackOrder()">Track</button>
-        </div>
-        <div id="trackResult"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="page-login" class="page">
-    <div class="auth-container">
-      <div class="auth-visual">
-        <div class="hero-geo geo-circle"></div>
-        <div class="hero-geo geo-circle-2"></div>
-        <div style="font-size:80px;margin-bottom:24px;animation:float-hero 6s ease-in-out infinite;">🖼️</div>
-        <h2 class="auth-visual-title">Welcome<br>back to <em>Obm Studio</em></h2>
-        <p class="auth-visual-sub">Your curated world of premium prints awaits.</p>
-      </div>
-      <div class="auth-form-side">
-        <div class="auth-form-wrap">
-          <div class="auth-logo">OBM STUDIO · Sign In</div>
-          <h2 class="auth-title">Welcome back</h2>
-          <p class="auth-sub">Sign in to continue shopping</p>
-          <div class="auth-form">
-            <button class="social-btn" onclick="toast('Redirecting to Google…')">
-              <span style="font-size:16px;">G</span> Continue with Google
-            </button>
-            <div class="auth-divider">or</div>
-            <div class="form-field">
-              <label>Email Address</label>
-              <input class="form-input" type="email" placeholder="you@example.com" />
-            </div>
-            <div class="form-field">
-              <label>Password</label>
-              <input class="form-input" type="password" placeholder="••••••••" />
-            </div>
-            <button class="btn btn-primary" style="justify-content:center;"
-              onclick="toast('Signed in!','success');nav('home')">Sign In</button>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><span class="logo-mark" style="width:22px;height:22px;font-size:10px;">O</span>Obm Studio</div>
+          <p class="footer-brand-sub">Premium photo printing and studio services. Turn your favourite moments into timeless art.</p>
+          <div class="footer-social">
+            <div class="social-icon">𝕏</div>
+            <div class="social-icon">in</div>
+            <div class="social-icon">ig</div>
+            <div class="social-icon">yt</div>
           </div>
-          <div class="auth-switch">Don't have an account? <a onclick="nav('register')">Create one</a></div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="page-register" class="page">
-    <div class="auth-container">
-      <div class="auth-visual">
-        <div class="hero-geo geo-circle"></div>
-        <div style="font-size:80px;margin-bottom:24px;animation:float-hero 6s ease-in-out infinite 1s;">✦</div>
-        <h2 class="auth-visual-title">Join the<br><em>Obm Studio</em> family</h2>
-        <p class="auth-visual-sub">Exclusive deals, early access, and the finest print quality.</p>
-      </div>
-      <div class="auth-form-side">
-        <div class="auth-form-wrap">
-          <div class="auth-logo">OBM STUDIO · Create Account</div>
-          <h2 class="auth-title">Create account</h2>
-          <p class="auth-sub">Join millions of happy creators</p>
-          <div class="auth-form">
-            <div class="form-row">
-              <div class="form-field"><label>First Name</label><input class="form-input" placeholder="Sakil" /></div>
-              <div class="form-field"><label>Last Name</label><input class="form-input" placeholder="Ahmed" /></div>
-            </div>
-            <div class="form-field">
-              <label>Email Address</label>
-              <input class="form-input" type="email" placeholder="you@example.com" />
-            </div>
-            <div class="form-field">
-              <label>Password</label>
-              <input class="form-input" type="password" placeholder="Min. 8 characters" />
-            </div>
-            <button class="btn btn-primary" style="justify-content:center;"
-              onclick="toast('Account created! Welcome.','success');nav('home')">Create Account</button>
-          </div>
-          <div class="auth-switch">Already have an account? <a onclick="nav('login')">Sign in</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="page-profile" class="page">
-    <div class="container">
-      <div class="profile-grid">
         <div>
-          <div class="profile-sidebar-card">
-            <div class="profile-avatar-lg">SK</div>
-            <div class="profile-name">Sakil Ahmed</div>
-            <div class="profile-email">sakil@honlor.app</div>
-            <nav class="profile-nav">
-              <div class="profile-nav-item active" onclick="renderProfileTab('orders', this)">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="2" y="3" width="20" height="14" rx="2" />
-                  <path d="m8 21 4-4 4 4" />
-                </svg>
-                Order History
-              </div>
-              <div class="profile-nav-item" onclick="renderProfileTab('wishlist', this)">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path
-                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                </svg>
-                Wishlist
-              </div>
-              <div class="profile-nav-item" onclick="renderProfileTab('settings', this)">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="3" />
-                  <path
-                    d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                </svg>
-                Settings
-              </div>
-              <div class="profile-nav-item" onclick="nav('login')">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
-                </svg>
-                Sign Out
-              </div>
-            </nav>
+          <div class="footer-col-title">Shop</div>
+          <a class="footer-link" onclick="nav('shop')">All Products</a>
+          <a class="footer-link" onclick="nav('shop',{cat:'Photo Frames'})">Photo Frames</a>
+          <a class="footer-link" onclick="nav('shop',{cat:'Albums'})">Albums</a>
+          <a class="footer-link" onclick="nav('shop',{cat:'Wall Frames'})">Wall Frames</a>
+          <a class="footer-link" onclick="nav('shop',{cat:'Gift Prints'})">Gift Prints</a>
+        </div>
+        <div>
+          <div class="footer-col-title">Help</div>
+          <a class="footer-link" onclick="nav('tracking')">Track Order</a>
+          <a class="footer-link">Returns</a>
+          <a class="footer-link">Shipping</a>
+          <a class="footer-link">FAQ</a>
+          <a class="footer-link">Contact Us</a>
+        </div>
+        <div>
+          <div class="footer-col-title">Company</div>
+          <a class="footer-link">About</a>
+          <a class="footer-link">Careers</a>
+          <a class="footer-link">Press</a>
+          <a class="footer-link">Blog</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 Obm Studio. All rights reserved.</span>
+        <div class="footer-legal">
+          <a>Privacy Policy</a>
+          <a>Terms of Service</a>
+          <a>Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════
+     SHOP PAGE
+══════════════════════════════════ -->
+<div id="page-shop" class="page">
+  <div class="container">
+    <div class="cat-strip" id="shopCatPills"></div>
+    <div class="shop-layout">
+      <aside class="sidebar">
+        <div class="filter-section">
+          <div class="filter-title">Price Range<button class="filter-reset">Reset</button></div>
+          <div class="price-display">
+            <span class="price-tag" id="priceMinLabel">$0</span>
+            <span class="price-tag" id="priceMaxLabel">$200</span>
+          </div>
+          <div class="range-track">
+            <div class="range-fill" id="priceFill" style="left:0;width:100%;"></div>
+            <input type="range" class="range-slider" id="priceMin" min="0" max="200" value="0" step="5"/>
+            <input type="range" class="range-slider" id="priceMax" min="0" max="200" value="200" step="5"/>
           </div>
         </div>
-        <div id="profileTabContent"></div>
+        <div class="filter-section">
+          <div class="filter-title">Star Rating</div>
+          <div id="starFilters"></div>
+        </div>
+        <div class="filter-section">
+          <div class="filter-title">Brand<button class="filter-reset">Reset</button></div>
+          <div id="brandList"></div>
+        </div>
+        <div class="filter-section">
+          <div class="filter-title">Delivery</div>
+          <div class="del-toggle">
+            <div class="del-opt active" onclick="selectDel(this)">Standard</div>
+            <div class="del-opt" onclick="selectDel(this)">Express</div>
+            <div class="del-opt" onclick="selectDel(this)">Pick Up</div>
+          </div>
+        </div>
+      </aside>
+      <div>
+        <div class="grid-header">
+          <span class="results-count" id="shopCount">12 items</span>
+          <select class="sort-select" id="shopSort" onchange="onSortChange()">
+            <option value="featured">Featured</option>
+            <option value="popular">Most Popular</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="rating">Best Rated</option>
+          </select>
+        </div>
+        <div class="products-grid" id="shopGrid"></div>
       </div>
     </div>
   </div>
+</div>
 
-  <div id="page-orders" class="page">
-    <div class="container" style="padding-top:calc(var(--nav-h) + 40px);">
-      <div class="section-eyebrow" style="margin-bottom:8px;">Account</div>
-      <h1 class="headline fade-up" style="margin-bottom:32px;">My Orders</h1>
-      <div id="ordersContent"></div>
+<!-- ══════════════════════════════════
+     DETAIL PAGE
+══════════════════════════════════ -->
+<div id="page-detail" class="page">
+  <div id="detailContent"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     CART PAGE
+══════════════════════════════════ -->
+<div id="page-cart" class="page">
+  <div id="cartContent"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     CHECKOUT PAGE
+══════════════════════════════════ -->
+<div id="page-checkout" class="page">
+  <div id="checkoutContent"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     SUCCESS PAGE
+══════════════════════════════════ -->
+<div id="page-success" class="page">
+  <div class="success-wrap container">
+    <div class="success-icon-wrap">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h1 class="success-h">Order Confirmed!</h1>
+    <p class="success-sub">Thank you for shopping with Obm Studio. Your order has been received and will be crafted with care.</p>
+    <div class="order-pill" id="successOrderId">OBM-00000000</div>
+    <div class="success-track-preview">
+      <div class="stp"><div class="stp-dot">✓</div><div class="stp-label">Placed</div></div>
+      <div class="stp-line done" style="margin-top:17px;"></div>
+      <div class="stp"><div class="stp-dot pending">📦</div><div class="stp-label">Packing</div></div>
+      <div class="stp-line" style="margin-top:17px;"></div>
+      <div class="stp"><div class="stp-dot pending">🚚</div><div class="stp-label">Shipped</div></div>
+      <div class="stp-line" style="margin-top:17px;"></div>
+      <div class="stp"><div class="stp-dot pending">🏠</div><div class="stp-label">Delivered</div></div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-outline btn-lg" onclick="nav('tracking')">Track Order</button>
+      <button class="btn btn-accent btn-lg" onclick="nav('shop')">Continue Shopping</button>
     </div>
   </div>
+</div>
 
-  <div class="toast-stack" id="toastStack"></div>
+<!-- ══════════════════════════════════
+     TRACKING PAGE
+══════════════════════════════════ -->
+<div id="page-tracking" class="page">
+  <div class="container">
+    <div class="tracking-wrap">
+      <div class="section-eyebrow" style="margin-bottom:8px;">Track Your Order</div>
+      <h1 class="headline fade-up" style="margin-bottom:32px;">Order Tracking</h1>
+      <div class="track-input-row">
+        <input class="form-input" id="trackInput" placeholder="Enter order ID (e.g. OBM-2025-00234)" style="flex:1;"/>
+        <button class="btn btn-accent" onclick="trackOrder()">Track</button>
+      </div>
+      <div id="trackResult"></div>
+    </div>
+  </div>
+</div>
 
-  <script src="app.js"></script>
+<!-- ══════════════════════════════════
+     LOGIN PAGE
+══════════════════════════════════ -->
+<div id="page-login" class="page">
+  <div class="auth-container">
+    <div class="auth-visual">
+      <div class="hero-geo geo-circle"></div>
+      <div class="hero-geo geo-circle-2"></div>
+      <div style="font-size:88px;margin-bottom:28px;animation:float-hero 6s ease-in-out infinite;">🖼️</div>
+      <h2 class="auth-visual-title">Welcome<br>back to <em>Obm Studio</em></h2>
+      <p class="auth-visual-sub">Your curated world of premium prints awaits.</p>
+    </div>
+    <div class="auth-form-side">
+      <div class="auth-form-wrap">
+        <div class="auth-logo">OBM STUDIO · Sign In</div>
+        <h2 class="auth-title">Welcome back</h2>
+        <p class="auth-sub">Sign in to continue shopping</p>
+        <div class="auth-form">
+          <button class="social-btn" onclick="toast('Redirecting to Google…')">
+            <span style="font-size:15px;font-weight:800;">G</span> Continue with Google
+          </button>
+          <div class="auth-divider">or</div>
+          <div class="form-field"><label>Email Address</label><input class="form-input" type="email" placeholder="you@example.com"/></div>
+          <div class="form-field"><label>Password</label><input class="form-input" type="password" placeholder="••••••••"/></div>
+          <button class="btn btn-primary" style="justify-content:center;width:100%;" onclick="toast('Signed in! Welcome back.','success');nav('home')">Sign In</button>
+        </div>
+        <div class="auth-switch">Don't have an account? <a onclick="nav('register')">Create one →</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     REGISTER PAGE
+══════════════════════════════════ -->
+<div id="page-register" class="page">
+  <div class="auth-container">
+    <div class="auth-visual">
+      <div class="hero-geo geo-circle"></div>
+      <div style="font-size:88px;margin-bottom:28px;animation:float-hero 6s ease-in-out infinite 1s;">✦</div>
+      <h2 class="auth-visual-title">Join the<br><em>Obm Studio</em> family</h2>
+      <p class="auth-visual-sub">Exclusive deals, early access, and the finest print quality.</p>
+    </div>
+    <div class="auth-form-side">
+      <div class="auth-form-wrap">
+        <div class="auth-logo">OBM STUDIO · Create Account</div>
+        <h2 class="auth-title">Create account</h2>
+        <p class="auth-sub">Join thousands of happy creators</p>
+        <div class="auth-form">
+          <div class="form-row">
+            <div class="form-field"><label>First Name</label><input class="form-input" placeholder="Sakil"/></div>
+            <div class="form-field"><label>Last Name</label><input class="form-input" placeholder="Ahmed"/></div>
+          </div>
+          <div class="form-field"><label>Email Address</label><input class="form-input" type="email" placeholder="you@example.com"/></div>
+          <div class="form-field"><label>Password</label><input class="form-input" type="password" placeholder="Min. 8 characters"/></div>
+          <button class="btn btn-primary" style="justify-content:center;width:100%;" onclick="toast('Account created! Welcome to Obm Studio. 🎉','success');nav('home')">Create Account</button>
+        </div>
+        <div class="auth-switch">Already have an account? <a onclick="nav('login')">Sign in →</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PROFILE PAGE
+══════════════════════════════════ -->
+<div id="page-profile" class="page">
+  <div class="container">
+    <div class="profile-grid">
+      <div>
+        <div class="profile-sidebar-card">
+          <div class="profile-avatar-lg">SK</div>
+          <div class="profile-name">Sakil Ahmed</div>
+          <div class="profile-email">sakil@obmstudio.com</div>
+          <nav class="profile-nav">
+            <div class="profile-nav-item active" onclick="renderProfileTab('orders',this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m8 21 4-4 4 4"/></svg>
+              Order History
+            </div>
+            <div class="profile-nav-item" onclick="renderProfileTab('wishlist',this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              Wishlist
+            </div>
+            <div class="profile-nav-item" onclick="renderProfileTab('settings',this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+              Settings
+            </div>
+            <div class="profile-nav-item" onclick="nav('login')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+              Sign Out
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div id="profileTabContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ORDERS PAGE
+══════════════════════════════════ -->
+<div id="page-orders" class="page">
+  <div class="container" style="padding-top:calc(var(--nav-h)+48px);">
+    <div class="section-eyebrow" style="margin-bottom:8px;">Account</div>
+    <h1 class="headline fade-up" style="margin-bottom:32px;">My Orders</h1>
+    <div id="ordersContent"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     GLOBAL OVERLAYS
+══════════════════════════════════ -->
+
+<!-- Quick View Modal -->
+<div id="quickViewModal">
+  <div class="modal-overlay" onclick="closeQuickView()"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeQuickView()">×</button>
+  </div>
+</div>
+
+<!-- Image Zoom Viewer -->
+<div id="imageZoomViewer" style="position:fixed;inset:0;z-index:9990;display:none;align-items:center;justify-content:center;">
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(12px);" onclick="closeImageZoom()"></div>
+  <div style="position:relative;z-index:2;text-align:center;">
+    <div class="zoom-emoji" style="font-size:280px;filter:drop-shadow(0 40px 80px rgba(0,0,0,0.4));line-height:1;"></div>
+    <div class="zoom-title" style="color:rgba(255,255,255,0.7);font-family:'Playfair Display',serif;font-size:22px;margin-top:28px;"></div>
+    <button onclick="closeImageZoom()" style="margin-top:20px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;padding:10px 28px;border-radius:var(--r-full);cursor:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;backdrop-filter:blur(8px);">
+      Close  ·  Esc
+    </button>
+  </div>
+</div>
+
+<!-- Activating image zoom -->
+<style>
+  #imageZoomViewer.active { display: flex !important; animation: fade-in-viewer 0.3s var(--ease-out); }
+</style>
+
+<!-- Toast Stack -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script src="app.js"></script>
 </body>
-
 </html>
